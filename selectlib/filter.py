@@ -18,7 +18,7 @@ def get_match_fn(expression):
                 return None
             else:
                 while index != -1:
-                    marks.update(range(index, index+term_len+1))
+                    marks.update(range(index, index+term_len))
                     index = line.find(term, index+term_len)
         return marks
     ignore_case = expression == expression.lower()
@@ -33,13 +33,13 @@ def marks_to_ranges(marks):
     for mark in sorted(marks):
         if start is None:
             start = mark
-            end = start
-        elif mark > end+1:
+            end = start + 1
+        elif mark > end:
             result.append((start, end))
             start = mark
-            end = start
+            end = start + 1
         else:
-            end = mark
+            end = mark + 1
     if start is not None:
         result.append((start, end))
     return result

@@ -68,3 +68,13 @@ def test_repeat():
     assert list(search(lines, term)) == [
         (0, [(0, 2)]),
     ]
+
+
+def test_incorrect_mark_bug():
+    lines = [
+        "/tests/test",
+    ]
+    term = "/test"
+    assert list(search(lines, term)) == [
+        (0, [(0, 5), (6, 11)]),
+    ]
