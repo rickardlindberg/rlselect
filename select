@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-import fcntl
 import os
 import sys
-import termios
 
 sys.path.insert(0, os.path.dirname(__file__))
 
 from selectlib.filter import search
 from selectlib.interactive import run_curses
 from selectlib.reader import read
+from selectlib.terminal import output_to_prompt
+
 
 USAGE = """\
 I select stuff.
@@ -24,47 +24,61 @@ Options:
     name=os.path.basename(__file__)
 )
 
-class CLI(object):
 
-    def run(self):
-        if "-h" in sys.argv or "--help" in sys.argv:
-            self._usage()
-            self._fail()
-        (action, result) = run_curses(read(sys.stdin), "", search)
-        if self._out_is("print") and action in ("select", "tab"):
-            print(result)
-            self._success()
-        elif self._out_is("shell") and action == "tab":
-            self._output_to_terminal(result.rstrip())
-            self._success()
-        elif self._out_is("shell") and action == "select":
-            self._output_to_terminal(result.rstrip()+"\n")
-            self._success()
-        self._fail()
+def main():
+    args = parse_args()
+    if args["-h"] or args["--help"]:
+        usage()
+        success()
+    (action, result) = run_curses(read(sys.stdin), "", search)
+    if args["--out"] == "print" and action in ("select", "tab"):
+        print(result)
+        success()
+    if args["--out"] == "shell" and action == "tab":
+        output_to_prompt(result)
+        success()
+    if args["--out"] == "shell" and action == "select":
+        output_to_prompt(result+"\n")
+        success()
+    fail()
 
-    def _output_to_terminal(self, text):
-        for ch in text:
-            fcntl.ioctl(sys.stdout.fileno(), termios.TIOCSTI, ch)
 
-    def _out_is(self, value):
-        return self._get_option("--out", "print") == value
+def parse_args():
+    args = {
+        "-h": None,
+        "--help": None,
+        "--out": None,
+    }
+    if sys.argv[1:] == ["-h"]:
+        args["-h"] = True
+        return args
+    if sys.argv[1:] == ["--help"]:
+        args["--help"] = True
+        return args
+    if sys.argv[1:] == ["--out", "print"]:
+        args["--out"] = "print"
+        return args
+    if sys.argv[1:] == ["--out", "shell"]:
+        args["--out"] = "shell"
+        return args
+    if sys.argv[1:] == []:
+        args["--out"] = "print"
+        return args
+    usage()
+    fail()
 
-    def _get_option(self, name, default):
-        option_found = False
-        for arg in sys.argv:
-            if option_found:
-                return arg
-            if arg == name:
-                option_found = True
-        return default
 
-    def _usage(self):
-        print(USAGE.strip())
+def usage():
+    print(USAGE.strip())
 
-    def _success(self):
-        sys.exit(0)
 
-    def _fail(self):
-        sys.exit(1)
+def success():
+    sys.exit(0)
 
-CLI().run()
+
+def fail():
+    sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
