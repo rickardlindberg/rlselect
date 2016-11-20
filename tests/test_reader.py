@@ -4,7 +4,7 @@ from selectlib.reader import read
 
 
 def test_read():
-    assert read(StringIO("one\ntwo\r\nthree\rfour")) == [
+    assert read(StringIO("one\ntwo\r\nthree\rfour\n")) == [
         "one",
         "two",
         "three",
