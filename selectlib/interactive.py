@@ -123,7 +123,10 @@ class Curses(object):
             self._search_fn(self._lines, self._term),
             self._max_matches()
         ))
-        self._match_highlight = -1
+        if len(self._matches) > 0:
+            self._match_highlight = 0
+        else:
+            self._match_highlight = -1
 
     def _max_matches(self):
         return self._height - self.MATCHES_START_LINE
