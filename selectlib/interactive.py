@@ -96,8 +96,12 @@ class Curses(object):
             self._text(screen, y, x, line[x:], STYLE_DEFAULT)
 
     def _render_header(self, screen):
-        status_text = "{} ".format(len(self._lines)).rjust(self._width)
-        self._text(screen, 1, 0, status_text, STYLE_STATUS)
+        self._text(screen, 1, 0, self._get_status_text(), STYLE_STATUS)
+
+    def _get_status_text(self):
+        return "selecting among {:,} lines ".format(
+            len(self._lines)
+        ).rjust(self._width)
 
     def _render_term(self, screen):
         self._text(screen, 0, 0, "> {}".format(self._term), STYLE_DEFAULT)
