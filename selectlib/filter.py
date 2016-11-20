@@ -1,24 +1,30 @@
-import re
-
-
-def search(lines, terms):
-    term_res = [term_to_re(term) for term in terms.split()]
+def search(lines, expression):
+    match = get_match_fn(expression)
     for index, line in enumerate(lines):
-        result = match(index, line, term_res)
-        if result:
-            yield result
+        result = match(line)
+        if result is not None:
+            yield (index, marks_to_ranges(result))
 
 
-def match(index, line, term_res):
-    marks = set()
-    for term_re in term_res:
-        matches = list(term_re.finditer(line))
-        if matches:
-            for match in matches:
-                for mark in range(match.start(), match.end()+1):
-                    marks.add(mark)
-        else:
-            return None
+def get_match_fn(expression):
+    terms = [(x, len(x)) for x in expression.split()]
+    def match(line):
+        lower = line.lower()
+        marks = set()
+        for term, n in terms:
+            index = lower.find(term)
+            if index == -1:
+                return None
+            else:
+                while index != -1:
+                    for mark in range(index, index+n+1):
+                        marks.add(mark)
+                    index = lower.find(term, index+n)
+        return marks
+    return match
+
+
+def marks_to_ranges(marks):
     result = []
     start = None
     end = None
@@ -34,11 +40,4 @@ def match(index, line, term_res):
             end = mark
     if start is not None:
         result.append((start, end))
-    return (index, result)
-
-
-def term_to_re(term):
-    return re.compile("".join([
-        "[{}]".format(char)
-        for char in term
-    ]), flags=re.IGNORECASE)
+    return result
