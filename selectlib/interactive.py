@@ -41,7 +41,6 @@ class Curses(object):
             curses.use_default_colors()
             STYLE_HIGHLIGHT.init_pair(1)
             STYLE_SELECT.init_pair(2)
-            STYLE_STATUS.init_pair(3)
         self._read_size(screen)
         self._set_term(term)
         return self._loop(screen)
@@ -165,13 +164,16 @@ class Style(object):
         return curses.color_pair(self._number) | self._extra_attrs
 
 
-class DefaultStyle(object):
+class BuiltinStyle(object):
+
+    def __init__(self, attrs=0):
+        self._attrs = attrs
 
     def attrs(self):
-        return 0
+        return self._attrs
 
 
-STYLE_DEFAULT = DefaultStyle()
+STYLE_DEFAULT = BuiltinStyle()
 STYLE_HIGHLIGHT = Style(curses.COLOR_RED, -1, curses.A_BOLD)
 STYLE_SELECT = Style(curses.COLOR_WHITE, curses.COLOR_GREEN, curses.A_BOLD)
-STYLE_STATUS = Style(curses.COLOR_WHITE, curses.COLOR_BLACK, curses.A_BOLD)
+STYLE_STATUS = BuiltinStyle(curses.A_REVERSE | curses.A_BOLD)
