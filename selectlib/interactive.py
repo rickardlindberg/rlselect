@@ -109,6 +109,7 @@ class Curses(object):
     def _text(self, screen, y, x, text, style):
         if x >= self._width:
             return
+        text = text.replace("\t", " "*4)
         if x + len(text) >= self._width:
             text = text[:self._width-x]
         try:
