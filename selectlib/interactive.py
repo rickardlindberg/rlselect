@@ -159,7 +159,7 @@ class Style(object):
         curses.init_pair(number, self._fg, self._bg)
 
     def attrs(self):
-        return curses.color_pair(self._number)|self._extra_attrs
+        return curses.color_pair(self._number) | self._extra_attrs
 
 
 class DefaultStyle(object):
@@ -171,7 +171,7 @@ class DefaultStyle(object):
         return 0
 
 
-STYLE_DEFAULT   = DefaultStyle()
+STYLE_DEFAULT = DefaultStyle()
 STYLE_HIGHLIGHT = Style(curses.COLOR_RED, -1, curses.A_BOLD)
-STYLE_SELECT    = Style(curses.COLOR_WHITE, curses.COLOR_GREEN, curses.A_BOLD)
-STYLE_STATUS    = Style(curses.COLOR_WHITE, curses.COLOR_BLACK, curses.A_BOLD)
+STYLE_SELECT = Style(curses.COLOR_WHITE, curses.COLOR_GREEN, curses.A_BOLD)
+STYLE_STATUS = Style(curses.COLOR_WHITE, curses.COLOR_BLACK, curses.A_BOLD)

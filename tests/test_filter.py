@@ -58,3 +58,13 @@ def test_multiple_terms():
     assert list(search(lines, term)) == [
         (0, [(1, 3), (7, 9)]),
     ]
+
+
+def test_repeat():
+    lines = [
+        "aaa",
+    ]
+    term = "aa"
+    assert list(search(lines, term)) == [
+        (0, [(0, 2)]),
+    ]
