@@ -167,9 +167,6 @@ class Style(object):
 
 class DefaultStyle(object):
 
-    def init_pair(self, number):
-        pass
-
     def attrs(self):
         return 0
 
