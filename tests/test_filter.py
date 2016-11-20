@@ -26,12 +26,24 @@ def test_re():
     ]
 
 
-def test_case():
+def test_ignores_case():
     lines = [
-        "one",
+        "hone",
         "tHree",
     ]
     term = "h"
+    assert list(search(lines, term)) == [
+        (0, [(0, 1)]),
+        (1, [(1, 2)]),
+    ]
+
+
+def test_uses_case():
+    lines = [
+        "hone",
+        "tHree",
+    ]
+    term = "H"
     assert list(search(lines, term)) == [
         (1, [(1, 2)]),
     ]

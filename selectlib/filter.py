@@ -7,19 +7,21 @@ def search(lines, expression):
 
 
 def get_match_fn(expression):
+    lower_case_it = expression == expression.lower()
     terms = [(x, len(x)) for x in expression.split()]
     def match(line):
-        lower = line.lower()
+        if lower_case_it:
+            line = line.lower()
         marks = set()
         for term, n in terms:
-            index = lower.find(term)
+            index = line.find(term)
             if index == -1:
                 return None
             else:
                 while index != -1:
                     for mark in range(index, index+n+1):
                         marks.add(mark)
-                    index = lower.find(term, index+n)
+                    index = line.find(term, index+n)
         return marks
     return match
 
