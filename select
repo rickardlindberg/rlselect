@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
 from selectlib.filter import search
-from selectlib.interactive import run_curses
+from selectlib.interactive import UiController
 from selectlib.reader import read
 from selectlib.terminal import output_to_prompt
 
@@ -15,11 +15,12 @@ USAGE = """\
 I select stuff.
 
 Usage:
-  {name} [--out (print | shell)]
+  {name} [--out (print | shell)] [--gui]
   {name} (-h | --help)
 
 Options:
   -h --help       Show this message and exit.
+  --gui           Use GUI version.
 """.format(
     name=os.path.basename(__file__)
 )
@@ -30,7 +31,11 @@ def main():
     if args["-h"] or args["--help"]:
         usage()
         success()
-    (action, result) = run_curses(read(sys.stdin), "", search)
+    (action, result) = get_ui_fn(args)(UiController(
+        read(sys.stdin),
+        "",
+        search
+    ))
     if args["--out"] == "print" and action in ("select", "tab"):
         print(result)
         success()
@@ -43,29 +48,43 @@ def main():
     fail()
 
 
+def get_ui_fn(args):
+    if args["--gui"]:
+        from selectlib.ui_wx import wx_ui_run
+        return wx_ui_run
+    else:
+        from selectlib.ui_curses import curses_ui_run
+        return curses_ui_run
+
+
 def parse_args():
     args = {
-        "-h": None,
-        "--help": None,
-        "--out": None,
+        "-h": False,
+        "--help": False,
+        "--out": "print",
+        "--gui": False,
     }
-    if sys.argv[1:] == ["-h"]:
+    rest = sys.argv[1:]
+    if rest == ["-h"]:
         args["-h"] = True
-        return args
-    if sys.argv[1:] == ["--help"]:
+        rest = []
+    if rest == ["--help"]:
         args["--help"] = True
-        return args
-    if sys.argv[1:] == ["--out", "print"]:
-        args["--out"] = "print"
-        return args
-    if sys.argv[1:] == ["--out", "shell"]:
-        args["--out"] = "shell"
-        return args
-    if sys.argv[1:] == []:
-        args["--out"] = "print"
-        return args
-    usage()
-    fail()
+        rest = []
+    while rest:
+        if rest[:2] == ["--out", "print"]:
+            args["--out"] = "print"
+            rest = rest[2:]
+        elif rest[:2] == ["--out", "shell"]:
+            args["--out"] = "shell"
+            rest = rest[2:]
+        elif rest[:1] == ["--gui"]:
+            args["--gui"] = True
+            rest = rest[1:]
+        else:
+            usage()
+            fail()
+    return args
 
 
 def usage():

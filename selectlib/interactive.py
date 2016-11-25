@@ -1,80 +1,62 @@
 from curses.ascii import unctrl, isprint, BS, CR, LF, TAB, ESC
-from curses import KEY_ENTER, KEY_BACKSPACE
+from curses import A_BOLD
+from curses import A_REVERSE
+from curses import COLOR_GREEN
+from curses import COLOR_RED
+from curses import COLOR_WHITE
+from curses import KEY_ENTER
+from curses import KEY_BACKSPACE
 from itertools import islice
-import contextlib
-import curses
-import os
-import sys
 
 
-def run_curses(lines, term, search_fn):
-    return Curses().run(lines, term, search_fn)
-
-
-class Curses(object):
+class UiController(object):
 
     MATCHES_START_LINE = 2
 
-    def run(self, lines, term, search_fn):
+    def __init__(self, lines, term, search_fn):
         self._lines = lines
+        self._term = term
         self._search_fn = search_fn
-        with self._redirect_terminal():
-            return curses.wrapper(self._run, term)
 
-    @contextlib.contextmanager
-    def _redirect_terminal(self):
-        stdin_fileno = sys.stdin.fileno()
-        stdout_fileno = sys.stdout.fileno()
-        terminal_stdin = open("/dev/tty", "rb")
-        terminal_stdout = open("/dev/tty", "wb")
-        process_stdin = os.dup(sys.stdin.fileno())
-        process_stdout = os.dup(sys.stdout.fileno())
-        os.dup2(terminal_stdin.fileno(), stdin_fileno)
-        os.dup2(terminal_stdout.fileno(), stdout_fileno)
-        yield
-        os.dup2(process_stdin, stdin_fileno)
-        os.dup2(process_stdout, stdout_fileno)
-
-    def _run(self, screen, term):
-        curses.raw()
+    def setup(self, curses, screen):
+        self.STYLE_DEFAULT = BuiltinStyle()
+        self.STYLE_HIGHLIGHT = Style(curses, COLOR_RED, -1, A_BOLD)
+        self.STYLE_SELECT = Style(curses, COLOR_WHITE, COLOR_GREEN, A_BOLD)
+        self.STYLE_STATUS = BuiltinStyle(A_REVERSE | A_BOLD)
+        self._read_size(screen)
+        self._set_term(self._term)
         if curses.has_colors():
             curses.use_default_colors()
-            STYLE_HIGHLIGHT.init_pair(1)
-            STYLE_SELECT.init_pair(2)
-        self._read_size(screen)
-        self._set_term(term)
-        return self._loop(screen)
+            self.STYLE_HIGHLIGHT.init_pair(1)
+            self.STYLE_SELECT.init_pair(2)
 
-    def _read_size(self, screen):
-        y, x = screen.getmaxyx()
-        self._height = y
-        self._width = x
-
-    def _loop(self, screen):
-        while True:
-            self._render(screen)
-            ch = screen.getch()
-            if isprint(ch):
-                self._set_term(self._term + chr(ch))
-            elif ch in (BS, KEY_BACKSPACE):
-                self._set_term(self._term[:-1])
-            elif unctrl(ch) == "^N":
-                self._set_match_highlight(self._match_highlight + 1)
-            elif unctrl(ch) == "^P":
-                self._set_match_highlight(self._match_highlight - 1)
-            elif ch in (KEY_ENTER, CR, LF):
-                return ("select", self._get_selected_item())
-            elif ch in (ESC,) or unctrl(ch) in ("^C", "^G"):
-                return ("abort", self._get_selected_item())
-            elif ch == TAB:
-                return ("tab", self._get_selected_item())
-
-    def _render(self, screen):
+    def render(self, screen):
         screen.erase()
         self._render_matches(screen)
         self._render_header(screen)
         self._render_term(screen)
         screen.refresh()
+
+    def process_input(self, ch):
+        if isprint(ch):
+            self._set_term(self._term + chr(ch))
+        elif ch in (BS, KEY_BACKSPACE):
+            self._set_term(self._term[:-1])
+        elif unctrl(ch) == "^N":
+            self._set_match_highlight(self._match_highlight + 1)
+        elif unctrl(ch) == "^P":
+            self._set_match_highlight(self._match_highlight - 1)
+        elif ch in (KEY_ENTER, CR, LF):
+            return ("select", self._get_selected_item())
+        elif ch in (ESC,) or unctrl(ch) in ("^C", "^G"):
+            return ("abort", self._get_selected_item())
+        elif ch == TAB:
+            return ("tab", self._get_selected_item())
+
+    def _read_size(self, screen):
+        y, x = screen.getmaxyx()
+        self._height = y
+        self._width = x
 
     def _render_matches(self, screen):
         y = self.MATCHES_START_LINE
@@ -86,17 +68,17 @@ class Curses(object):
 
     def _render_match(self, screen, y, match_index, line, items):
         if match_index == self._match_highlight:
-            self._text(screen, y, 0, line.ljust(self._width), STYLE_SELECT)
+            self._text(screen, y, 0, line.ljust(self._width), self.STYLE_SELECT)
         else:
             x = 0
             for start, end in items:
-                self._text(screen, y, x, line[x:start], STYLE_DEFAULT)
-                self._text(screen, y, start, line[start:end], STYLE_HIGHLIGHT)
+                self._text(screen, y, x, line[x:start], self.STYLE_DEFAULT)
+                self._text(screen, y, start, line[start:end], self.STYLE_HIGHLIGHT)
                 x = end
-            self._text(screen, y, x, line[x:], STYLE_DEFAULT)
+            self._text(screen, y, x, line[x:], self.STYLE_DEFAULT)
 
     def _render_header(self, screen):
-        self._text(screen, 1, 0, self._get_status_text(), STYLE_STATUS)
+        self._text(screen, 1, 0, self._get_status_text(), self.STYLE_STATUS)
 
     def _get_status_text(self):
         return "selecting among {:,} lines ".format(
@@ -104,7 +86,7 @@ class Curses(object):
         ).rjust(self._width)
 
     def _render_term(self, screen):
-        self._text(screen, 0, 0, "> {}".format(self._term), STYLE_DEFAULT)
+        self._text(screen, 0, 0, "> {}".format(self._term), self.STYLE_DEFAULT)
 
     def _text(self, screen, y, x, text, style):
         if x >= self._width:
@@ -112,11 +94,7 @@ class Curses(object):
         text = text.replace("\t", " "*4)
         if x + len(text) >= self._width:
             text = text[:self._width-x]
-        try:
-            screen.addstr(y, x, text, style.attrs())
-        except curses.error:
-            # Writing last position (max_y, max_x) fails, but we can ignore it.
-            pass
+        screen.addstr(y, x, text, style.attrs())
 
     def _set_term(self, new_term):
         self._term = new_term
@@ -133,7 +111,7 @@ class Curses(object):
             self._match_highlight = -1
 
     def _max_matches(self):
-        return self._height - self.MATCHES_START_LINE
+        return max(0, self._height - self.MATCHES_START_LINE)
 
     def _set_match_highlight(self, new_value):
         if len(self._matches) == 0:
@@ -156,17 +134,23 @@ class Curses(object):
 
 class Style(object):
 
-    def __init__(self, fg, bg, extra_attrs=0):
+    def __init__(self, curses, fg, bg, extra_attrs=0):
+        self._curses = curses
         self._fg = fg
         self._bg = bg
         self._extra_attrs = extra_attrs
+        self._number = None
 
     def init_pair(self, number):
         self._number = number
-        curses.init_pair(number, self._fg, self._bg)
+        self._curses.init_pair(number, self._fg, self._bg)
 
     def attrs(self):
-        return curses.color_pair(self._number) | self._extra_attrs
+        if self._number is None:
+            pair = 0
+        else:
+            pair = self._curses.color_pair(self._number)
+        return pair | self._extra_attrs
 
 
 class BuiltinStyle(object):
@@ -176,9 +160,3 @@ class BuiltinStyle(object):
 
     def attrs(self):
         return self._attrs
-
-
-STYLE_DEFAULT = BuiltinStyle()
-STYLE_HIGHLIGHT = Style(curses.COLOR_RED, -1, curses.A_BOLD)
-STYLE_SELECT = Style(curses.COLOR_WHITE, curses.COLOR_GREEN, curses.A_BOLD)
-STYLE_STATUS = BuiltinStyle(curses.A_REVERSE | curses.A_BOLD)
