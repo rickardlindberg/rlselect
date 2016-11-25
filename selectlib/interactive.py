@@ -1,9 +1,4 @@
 from curses.ascii import unctrl, isprint, BS, CR, LF, TAB, ESC
-from curses import A_BOLD
-from curses import A_REVERSE
-from curses import COLOR_GREEN
-from curses import COLOR_RED
-from curses import COLOR_WHITE
 from curses import KEY_ENTER
 from curses import KEY_BACKSPACE
 from itertools import islice
@@ -18,17 +13,9 @@ class UiController(object):
         self._term = term
         self._search_fn = search_fn
 
-    def setup(self, curses, screen):
-        self.STYLE_DEFAULT = BuiltinStyle()
-        self.STYLE_HIGHLIGHT = Style(curses, COLOR_RED, -1, A_BOLD)
-        self.STYLE_SELECT = Style(curses, COLOR_WHITE, COLOR_GREEN, A_BOLD)
-        self.STYLE_STATUS = BuiltinStyle(A_REVERSE | A_BOLD)
+    def setup(self, screen):
         self._read_size(screen)
         self._set_term(self._term)
-        if curses.has_colors():
-            curses.use_default_colors()
-            self.STYLE_HIGHLIGHT.init_pair(1)
-            self.STYLE_SELECT.init_pair(2)
 
     def render(self, screen):
         screen.erase()
@@ -68,17 +55,17 @@ class UiController(object):
 
     def _render_match(self, screen, y, match_index, line, items):
         if match_index == self._match_highlight:
-            self._text(screen, y, 0, line.ljust(self._width), self.STYLE_SELECT)
+            self._text(screen, y, 0, line.ljust(self._width), "select")
         else:
             x = 0
             for start, end in items:
-                self._text(screen, y, x, line[x:start], self.STYLE_DEFAULT)
-                self._text(screen, y, start, line[start:end], self.STYLE_HIGHLIGHT)
+                self._text(screen, y, x, line[x:start], "default")
+                self._text(screen, y, start, line[start:end], "highlight")
                 x = end
-            self._text(screen, y, x, line[x:], self.STYLE_DEFAULT)
+            self._text(screen, y, x, line[x:], "default")
 
     def _render_header(self, screen):
-        self._text(screen, 1, 0, self._get_status_text(), self.STYLE_STATUS)
+        self._text(screen, 1, 0, self._get_status_text(), "status")
 
     def _get_status_text(self):
         return "selecting among {:,} lines ".format(
@@ -86,7 +73,7 @@ class UiController(object):
         ).rjust(self._width)
 
     def _render_term(self, screen):
-        self._text(screen, 0, 0, "> {}".format(self._term), self.STYLE_DEFAULT)
+        self._text(screen, 0, 0, "> {}".format(self._term), "default")
 
     def _text(self, screen, y, x, text, style):
         if x >= self._width:
@@ -94,7 +81,7 @@ class UiController(object):
         text = text.replace("\t", " "*4)
         if x + len(text) >= self._width:
             text = text[:self._width-x]
-        screen.addstr(y, x, text, style.attrs())
+        screen.addstr(y, x, text, style)
 
     def _set_term(self, new_term):
         self._term = new_term
@@ -130,33 +117,3 @@ class UiController(object):
             return self._lines[self._matches[0][0]]
         else:
             return self._term
-
-
-class Style(object):
-
-    def __init__(self, curses, fg, bg, extra_attrs=0):
-        self._curses = curses
-        self._fg = fg
-        self._bg = bg
-        self._extra_attrs = extra_attrs
-        self._number = None
-
-    def init_pair(self, number):
-        self._number = number
-        self._curses.init_pair(number, self._fg, self._bg)
-
-    def attrs(self):
-        if self._number is None:
-            pair = 0
-        else:
-            pair = self._curses.color_pair(self._number)
-        return pair | self._extra_attrs
-
-
-class BuiltinStyle(object):
-
-    def __init__(self, attrs=0):
-        self._attrs = attrs
-
-    def attrs(self):
-        return self._attrs

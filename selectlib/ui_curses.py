@@ -28,12 +28,16 @@ def _redirect_terminal():
 
 def _run(screen, controller):
     curses.raw()
-    controller.setup(curses, screen)
+    if curses.has_colors():
+        curses.use_default_colors()
+        curses.init_pair(1, curses.COLOR_RED, -1)
+        curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_GREEN)
+    controller.setup(screen)
     return _loop(controller, screen)
 
 
 def _loop(controller, screen):
-    patched_screen = _PatchedScreen(screen)
+    patched_screen = _Screen(screen)
     while True:
         controller.render(patched_screen)
         result = controller.process_input(screen.getch())
@@ -41,23 +45,35 @@ def _loop(controller, screen):
             return result
 
 
-class _PatchedScreen(object):
+class _Screen(object):
 
     def __init__(self, curses_screen):
         self._curses_screen = curses_screen
 
-    def getmaxyx(self, *args, **kwargs):
-        return self._curses_screen.getmaxyx(*args, **kwargs)
+    def getmaxyx(self):
+        return self._curses_screen.getmaxyx()
 
-    def erase(self, *args, **kwargs):
-        return self._curses_screen.erase(*args, **kwargs)
+    def erase(self):
+        return self._curses_screen.erase()
 
-    def addstr(self, y, x, text, attrs):
+    def addstr(self, y, x, text, style):
+        if style == "highlight":
+            attrs = curses.A_BOLD
+            if curses.has_colors():
+                attrs |= curses.color_pair(1)
+        elif style == "select":
+            attrs = curses.A_BOLD
+            if curses.has_colors():
+                attrs |= curses.color_pair(2)
+        elif style == "status":
+            attrs = curses.A_REVERSE | curses.A_BOLD
+        else:
+            attrs = 0
         try:
             self._curses_screen.addstr(y, x, text, attrs)
         except curses.error:
             # Writing last position (max_y, max_x) fails, but we can ignore it.
             pass
 
-    def refresh(self, *args, **kwargs):
-        return self._curses_screen.refresh(*args, **kwargs)
+    def refresh(self):
+        return self._curses_screen.refresh()

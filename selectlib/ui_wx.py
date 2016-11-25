@@ -13,6 +13,9 @@ def wx_ui_run(controller):
 
 WX_BG = (0, 43, 54)
 WX_FG = (101, 123, 131)
+WX_RED = (220, 50, 47)
+WX_GREEN = (133, 153, 0)
+WX_WHITE = (255, 255, 255)
 
 
 class MyApp(wx.App):
@@ -32,42 +35,7 @@ class WxCurses(wx.Frame):
 
     def __init__(self, app, controller):
         wx.Frame.__init__(self, None, size=(800, 600))
-        self._controller = controller
-        self._pairs = {}
-        self._screen = WxScreen(self, app, self._controller)
-        wx.CallAfter(self._after_init)
-
-    def _after_init(self):
-        self._controller.setup(self, self._screen)
-        self._controller.render(self._screen)
-
-    def get_pair(self, number):
-        if number & curses.A_REVERSE == curses.A_REVERSE:
-            return (WX_BG, WX_FG)
-        else:
-            return self._pairs.get(number & 0x03, (WX_FG, WX_BG))
-
-    def has_colors(self):
-        return True
-
-    def use_default_colors(self):
-        pass
-
-    def init_pair(self, number, fg, bg):
-        self._pairs[number] = (
-            self._to_wx_color(fg, WX_FG),
-            self._to_wx_color(bg, WX_BG),
-        )
-
-    def color_pair(self, number):
-        return number
-
-    def _to_wx_color(self, color, default):
-        return {
-            curses.COLOR_RED: (220, 50, 47),
-            curses.COLOR_GREEN: (133, 153, 0),
-            curses.COLOR_WHITE: (255, 255, 255),
-        }.get(color, default)
+        self._screen = WxScreen(self, app, controller)
 
 
 class WxScreen(wx.Panel):
@@ -82,6 +50,11 @@ class WxScreen(wx.Panel):
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.Bind(wx.EVT_CHAR, self._on_key_down)
         self.Bind(wx.EVT_PAINT, self._on_paint)
+        wx.CallAfter(self._after_init)
+
+    def _after_init(self):
+        self._controller.setup(self)
+        self._controller.render(self)
 
     def getmaxyx(self):
         ww, wh = self.GetSizeTuple()
@@ -92,8 +65,8 @@ class WxScreen(wx.Panel):
     def erase(self):
         self._commands = []
 
-    def addstr(self, y, x, text, attr):
-        self._commands.append((y, x, text, attr))
+    def addstr(self, y, x, text, style):
+        self._commands.append((y, x, text, style))
 
     def refresh(self):
         width, height = self.GetSizeTuple()
@@ -104,12 +77,19 @@ class WxScreen(wx.Panel):
         memdc.SetBackground(wx.Brush(WX_BG, wx.SOLID))
         memdc.SetBackgroundMode(wx.PENSTYLE_SOLID)
         memdc.Clear()
-        for (y, x, text, attr) in self._commands:
-            if attr & curses.A_BOLD == curses.A_BOLD:
+        for (y, x, text, style) in self._commands:
+            if style == "highlight":
                 memdc.SetFont(self._base_font_bold)
+                fg, bg = WX_RED, WX_BG
+            elif style == "select":
+                memdc.SetFont(self._base_font_bold)
+                fg, bg = WX_WHITE, WX_GREEN
+            elif style == "status":
+                memdc.SetFont(self._base_font_bold)
+                fg, bg = WX_BG, WX_FG
             else:
                 memdc.SetFont(self._base_font)
-            fg, bg = self.GetParent().get_pair(attr)
+                fg, bg = WX_FG, WX_BG
             memdc.SetTextBackground(bg)
             memdc.SetTextForeground(fg)
             memdc.DrawText(text, x*self._fw, y*self._fh)
