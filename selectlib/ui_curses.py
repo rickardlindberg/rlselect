@@ -1,5 +1,6 @@
 import contextlib
 import curses
+import locale
 import os
 import sys
 
@@ -70,10 +71,13 @@ class _Screen(object):
         else:
             attrs = 0
         try:
-            self._curses_screen.addstr(y, x, text, attrs)
+            self._curses_screen.addstr(y, x, self._encode(text), attrs)
         except curses.error:
             # Writing last position (max_y, max_x) fails, but we can ignore it.
             pass
 
     def refresh(self):
         return self._curses_screen.refresh()
+
+    def _encode(self, text):
+        return text.encode(locale.getpreferredencoding())

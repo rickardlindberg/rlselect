@@ -1,7 +1,8 @@
 from curses.ascii import unctrl, isprint, BS, CR, LF, TAB, ESC
-from curses import KEY_ENTER
 from curses import KEY_BACKSPACE
+from curses import KEY_ENTER
 from itertools import islice
+import locale
 
 
 class UiController(object):
@@ -55,30 +56,46 @@ class UiController(object):
 
     def _render_match(self, screen, y, match_index, line, items):
         if match_index == self._match_highlight:
-            self._text(screen, y, 0, line.ljust(self._width), "select")
+            self._text(screen, y, 0, self._get_line_text(line), "select")
         else:
+            last = 0
             x = 0
             for start, end in items:
-                self._text(screen, y, x, line[x:start], "default")
-                self._text(screen, y, start, line[start:end], "highlight")
-                x = end
-            self._text(screen, y, x, line[x:], "default")
+                before = self._unicodify(line[last:start])
+                self._text(screen, y, x, before, "default")
+                x += len(before)
+                after = self._unicodify(line[start:end])
+                self._text(screen, y, x, after, "highlight")
+                x += len(after)
+                last = end
+            self._text(screen, y, x, self._unicodify(line[last:]), "default")
+
+    def _get_line_text(self, line):
+        return self._unicodify(line).ljust(self._width)
 
     def _render_header(self, screen):
         self._text(screen, 1, 0, self._get_status_text(), "status")
 
     def _get_status_text(self):
-        return "selecting among {:,} lines ".format(
+        return u"selecting among {:,} lines ".format(
             len(self._lines)
         ).rjust(self._width)
 
     def _render_term(self, screen):
-        self._text(screen, 0, 0, "> {}".format(self._term), "default")
+        self._text(screen, 0, 0, self._get_term_text(), "default")
+
+    def _get_term_text(self):
+        return u"> {}".format(self._unicodify(self._term))
+
+    def _unicodify(self, text):
+        return text.decode(
+            locale.getpreferredencoding(),
+            "ignore"
+        ).replace("\t", "    ")
 
     def _text(self, screen, y, x, text, style):
         if x >= self._width:
             return
-        text = text.replace("\t", " "*4)
         if x + len(text) >= self._width:
             text = text[:self._width-x]
         screen.addstr(y, x, text, style)

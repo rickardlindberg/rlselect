@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import locale
 import os
 import sys
 
@@ -31,6 +32,7 @@ def main():
     if args["-h"] or args["--help"]:
         usage()
         success()
+    locale.setlocale(locale.LC_ALL, "")
     (action, result) = get_ui_fn(args)(UiController(
         read(sys.stdin),
         "",
