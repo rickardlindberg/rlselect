@@ -30,6 +30,8 @@ class UiController(object):
             self._set_term(self._term + chr(ch))
         elif ch in (BS, KEY_BACKSPACE):
             self._set_term(self._term[:-1])
+        elif unctrl(ch) == "^W":
+            self._set_term(self._strip_last_word(self._term))
         elif unctrl(ch) == "^N":
             self._set_match_highlight(self._match_highlight + 1)
         elif unctrl(ch) == "^P":
@@ -40,6 +42,13 @@ class UiController(object):
             return ("abort", self._get_selected_item())
         elif ch == TAB:
             return ("tab", self._get_selected_item())
+
+    def _strip_last_word(self, text):
+        remaining_parts = text.rstrip().split(" ")[:-1]
+        if remaining_parts:
+            return " ".join(remaining_parts) + " "
+        else:
+            return ""
 
     def _read_size(self, screen):
         y, x = screen.getmaxyx()
