@@ -1,5 +1,3 @@
-import curses
-
 import wx
 
 
