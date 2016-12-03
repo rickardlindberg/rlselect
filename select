@@ -16,7 +16,7 @@ USAGE = """\
 I select stuff.
 
 Usage:
-  {name} [--out (print | shell)] [--gui]
+  {name} [--out (print | shell)] [--gui] <initial-pattern>
   {name} (-h | --help)
 
 Options:
@@ -35,7 +35,7 @@ def main():
     locale.setlocale(locale.LC_ALL, "")
     (action, result) = get_ui_fn(args)(UiController(
         read(sys.stdin),
-        "",
+        " ".join(args["<initial-pattern>"]),
         search
     ))
     if args["--out"] == "print" and action in ("select", "tab"):
@@ -65,6 +65,7 @@ def parse_args():
         "--help": False,
         "--out": "print",
         "--gui": False,
+        "<initial-pattern>": [],
     }
     rest = sys.argv[1:]
     if rest == ["-h"]:
@@ -84,8 +85,8 @@ def parse_args():
             args["--gui"] = True
             rest = rest[1:]
         else:
-            usage()
-            fail()
+            args["<initial-pattern>"] = rest
+            rest = []
     return args
 
 
