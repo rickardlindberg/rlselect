@@ -16,12 +16,14 @@ USAGE = """\
 I select stuff.
 
 Usage:
-  {name} [--out (print | shell)] [--gui] <initial-pattern>
+  {name} [--complete] [--gui] [--] <initial-search-terms>...
   {name} (-h | --help)
 
 Options:
-  -h --help       Show this message and exit.
-  --gui           Use GUI version.
+  --complete    Run in complete mode:
+                write result to console instead of stdout.
+  --gui         Use GUI version instead of console version.
+  -h,  --help   Show this message and exit.
 """.format(
     name=os.path.basename(__file__)
 )
@@ -34,18 +36,19 @@ def main():
         success()
     locale.setlocale(locale.LC_ALL, "")
     (action, result) = get_ui_fn(args)(UiController(
-        read(sys.stdin),
-        " ".join(args["<initial-pattern>"]),
-        search
+        lines=read(sys.stdin),
+        term=" ".join(args["<initial-search-terms>"]),
+        search_fn=search,
+        tab_exits=args["--complete"]
     ))
-    if args["--out"] == "print" and action in ("select", "tab"):
-        print(result)
-        success()
-    if args["--out"] == "shell" and action == "tab":
+    if args["--complete"] and action == "tab":
         output_to_prompt(result)
         success()
-    if args["--out"] == "shell" and action == "select":
+    elif args["--complete"] and action == "select":
         output_to_prompt(result+"\n")
+        success()
+    elif not args["--complete"] and action == "select":
+        print(result)
         success()
     fail()
 
@@ -63,9 +66,9 @@ def parse_args():
     args = {
         "-h": False,
         "--help": False,
-        "--out": "print",
+        "--complete": False,
         "--gui": False,
-        "<initial-pattern>": [],
+        "<initial-search-terms>": [],
     }
     rest = sys.argv[1:]
     if rest == ["-h"]:
@@ -75,17 +78,17 @@ def parse_args():
         args["--help"] = True
         rest = []
     while rest:
-        if rest[:2] == ["--out", "print"]:
-            args["--out"] = "print"
-            rest = rest[2:]
-        elif rest[:2] == ["--out", "shell"]:
-            args["--out"] = "shell"
-            rest = rest[2:]
+        if rest[:1] == ["--complete"]:
+            args["--complete"] = True
+            rest = rest[1:]
         elif rest[:1] == ["--gui"]:
             args["--gui"] = True
             rest = rest[1:]
+        elif rest[:1] == ["--"]:
+            args["<initial-search-terms>"] = rest[1:]
+            rest = []
         else:
-            args["<initial-pattern>"] = rest
+            args["<initial-search-terms>"] = rest
             rest = []
     return args
 

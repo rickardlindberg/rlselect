@@ -9,10 +9,11 @@ class UiController(object):
 
     MATCHES_START_LINE = 2
 
-    def __init__(self, lines, term, search_fn):
+    def __init__(self, lines, term, search_fn, tab_exits):
         self._lines = lines
         self._term = term
         self._search_fn = search_fn
+        self._tab_exits = tab_exits
 
     def setup(self, screen):
         self._read_size(screen)
@@ -40,7 +41,7 @@ class UiController(object):
             return ("select", self._get_selected_item())
         elif ch in (ESC,) or unctrl(ch) in ("^C", "^G"):
             return ("abort", self._get_selected_item())
-        elif ch == TAB:
+        elif ch == TAB and self._tab_exits:
             return ("tab", self._get_selected_item())
 
     def _strip_last_word(self, text):
