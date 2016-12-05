@@ -5,9 +5,23 @@ import os
 import sys
 
 
-def curses_ui_run(controller):
+COLOR_MAP = {
+    "BACKGROUND": -1,
+    "FOREGROUND": -1,
+    "BLACK": curses.COLOR_BLACK,
+    "BLUE": curses.COLOR_BLUE,
+    "CYAN": curses.COLOR_CYAN,
+    "GREEN": curses.COLOR_GREEN,
+    "MAGENTA": curses.COLOR_MAGENTA,
+    "RED": curses.COLOR_RED,
+    "WHITE": curses.COLOR_WHITE,
+    "YELLOW": curses.COLOR_YELLOW,
+}
+
+
+def curses_ui_run(config, controller):
     with _redirect_terminal():
-        return curses.wrapper(_run, controller)
+        return curses.wrapper(_run, config, controller)
 
 
 @contextlib.contextmanager
@@ -27,12 +41,20 @@ def _redirect_terminal():
         os.dup2(process_stdout, stdout_fileno)
 
 
-def _run(screen, controller):
+def _run(screen, config, controller):
     curses.raw()
     if curses.has_colors():
         curses.use_default_colors()
-        curses.init_pair(1, curses.COLOR_RED, -1)
-        curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_GREEN)
+        curses.init_pair(
+            1,
+            COLOR_MAP[config.get_highlight_fg()],
+            COLOR_MAP[config.get_highlight_bg()],
+        )
+        curses.init_pair(
+            2,
+            COLOR_MAP[config.get_selection_fg()],
+            COLOR_MAP[config.get_selection_bg()]
+        )
     controller.setup(screen)
     return _loop(controller, screen)
 

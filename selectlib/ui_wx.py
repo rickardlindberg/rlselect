@@ -1,19 +1,12 @@
 import wx
 
 
-def wx_ui_run(controller):
+def wx_ui_run(config, controller):
     app = MyApp()
-    main_frame = WxCurses(app, controller)
+    main_frame = WxCurses(app, config, controller)
     main_frame.Show()
     app.MainLoop()
     return app.get_result()
-
-
-WX_BG = (0, 43, 54)
-WX_FG = (101, 123, 131)
-WX_RED = (220, 50, 47)
-WX_GREEN = (133, 153, 0)
-WX_WHITE = (255, 255, 255)
 
 
 class MyApp(wx.App):
@@ -31,16 +24,17 @@ class MyApp(wx.App):
 
 class WxCurses(wx.Frame):
 
-    def __init__(self, app, controller):
-        wx.Frame.__init__(self, None, size=(800, 600))
-        self._screen = WxScreen(self, app, controller)
+    def __init__(self, app, config, controller):
+        wx.Frame.__init__(self, None, size=config.get_gui_size())
+        self._screen = WxScreen(self, app, config, controller)
 
 
 class WxScreen(wx.Panel):
 
-    def __init__(self, parent, app, controller):
+    def __init__(self, parent, app, config, controller):
         wx.Panel.__init__(self, parent, style=wx.NO_BORDER | wx.WANTS_CHARS)
         self._app = app
+        self._config = config
         self._controller = controller
         self._surface_bitmap = None
         self._commands = []
@@ -72,22 +66,28 @@ class WxScreen(wx.Panel):
         memdc = wx.MemoryDC()
         memdc.SelectObject(self._surface_bitmap)
         memdc.BeginDrawing()
-        memdc.SetBackground(wx.Brush(WX_BG, wx.SOLID))
+        memdc.SetBackground(wx.Brush(
+            self._config.get_rgb("BACKGROUND"), wx.SOLID
+        ))
         memdc.SetBackgroundMode(wx.PENSTYLE_SOLID)
         memdc.Clear()
         for (y, x, text, style) in self._commands:
             if style == "highlight":
                 memdc.SetFont(self._base_font_bold)
-                fg, bg = WX_RED, WX_BG
+                fg = self._config.get_rgb(self._config.get_highlight_fg())
+                bg = self._config.get_rgb(self._config.get_highlight_bg())
             elif style == "select":
                 memdc.SetFont(self._base_font_bold)
-                fg, bg = WX_WHITE, WX_GREEN
+                fg = self._config.get_rgb(self._config.get_selection_fg())
+                bg = self._config.get_rgb(self._config.get_selection_bg())
             elif style == "status":
                 memdc.SetFont(self._base_font_bold)
-                fg, bg = WX_BG, WX_FG
+                fg = self._config.get_rgb("BACKGROUND")
+                bg = self._config.get_rgb("FOREGROUND")
             else:
                 memdc.SetFont(self._base_font)
-                fg, bg = WX_FG, WX_BG
+                fg = self._config.get_rgb("FOREGROUND")
+                bg = self._config.get_rgb("BACKGROUND")
             memdc.SetTextBackground(bg)
             memdc.SetTextForeground(fg)
             memdc.DrawText(text, x*self._fw, y*self._fh)
@@ -98,7 +98,7 @@ class WxScreen(wx.Panel):
 
     def _init_fonts(self):
         self._base_font = wx.Font(
-            11,
+            self._config.get_gui_font_size(),
             wx.FONTFAMILY_TELETYPE,
             wx.FONTSTYLE_NORMAL,
             wx.FONTWEIGHT_NORMAL
