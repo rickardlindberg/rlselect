@@ -114,7 +114,7 @@ class WxScreen(wx.Panel):
         self._fw, self._fh = memdc.GetTextExtent(".")
 
     def _on_key_down(self, evt):
-        result = self._controller.process_input(evt.GetUnicodeKey())
+        result = self._controller.process_input(unichr(evt.GetUnicodeKey()))
         if result:
             self._app.set_result(result)
             self.GetParent().Close()

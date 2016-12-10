@@ -61,11 +61,30 @@ def _run(screen, config, controller):
 
 def _loop(controller, screen):
     patched_screen = _Screen(screen)
+    buf = ""
     while True:
         controller.render(patched_screen)
-        result = controller.process_input(screen.getch())
-        if result:
-            return result
+        ch = screen.getch()
+        if ch > 255:
+            if ch == curses.KEY_BACKSPACE:
+                buf = u"\u0008".encode(locale.getpreferredencoding())
+            elif ch == curses.KEY_ENTER:
+                buf = u"\u000D".encode(locale.getpreferredencoding())
+            else:
+                buf = ""
+                continue
+        else:
+            buf += chr(ch)
+        try:
+            unicode_character = buf.decode(locale.getpreferredencoding())
+        except UnicodeDecodeError:
+            # We are dealing with an incomplete multi-byte character.
+            pass
+        else:
+            buf = ""
+            result = controller.process_input(unicode_character)
+            if result:
+                return result
 
 
 class _Screen(object):

@@ -1,8 +1,17 @@
-from curses.ascii import unctrl, isprint, BS, CR, LF, TAB, ESC
-from curses import KEY_BACKSPACE
-from curses import KEY_ENTER
 from itertools import islice
 import locale
+
+
+CTRL_W = u"\u0017"
+CTRL_N = u"\u000E"
+CTRL_P = u"\u0010"
+CTRL_C = u"\u0003"
+CTRL_G = u"\u0007"
+ESC = u"\u001B"
+BS = u"\u0008"
+CR = u"\u000D"
+LF = u"\u000A"
+TAB = u"\u0009"
 
 
 class UiController(object):
@@ -26,23 +35,33 @@ class UiController(object):
         self._render_term(screen)
         screen.refresh()
 
-    def process_input(self, ch):
-        if isprint(ch):
-            self._set_term(self._term + chr(ch))
-        elif ch in (BS, KEY_BACKSPACE):
-            self._set_term(self._term[:-1])
-        elif unctrl(ch) == "^W":
+    def process_input(self, unicode_character):
+        if unicode_character == BS:
+            self._set_term(
+                self._term.decode(
+                    locale.getpreferredencoding()
+                )[:-1].encode(
+                    locale.getpreferredencoding()
+                )
+            )
+        elif unicode_character == CTRL_W:
             self._set_term(self._strip_last_word(self._term))
-        elif unctrl(ch) == "^N":
+        elif unicode_character == CTRL_N:
             self._set_match_highlight(self._match_highlight + 1)
-        elif unctrl(ch) == "^P":
+        elif unicode_character == CTRL_P:
             self._set_match_highlight(self._match_highlight - 1)
-        elif ch in (KEY_ENTER, CR, LF):
+        elif unicode_character in (CR, LF):
             return ("select", self._get_selected_item())
-        elif ch in (ESC,) or unctrl(ch) in ("^C", "^G"):
+        elif unicode_character in (ESC, CTRL_C, CTRL_G):
             return ("abort", self._get_selected_item())
-        elif ch == TAB and self._tab_exits:
+        elif unicode_character == TAB and self._tab_exits:
             return ("tab", self._get_selected_item())
+        elif ord(unicode_character) >= 32:
+            self._set_term(
+                self._term
+                +
+                unicode_character.encode(locale.getpreferredencoding())
+            )
 
     def _strip_last_word(self, text):
         remaining_parts = text.rstrip().split(" ")[:-1]
