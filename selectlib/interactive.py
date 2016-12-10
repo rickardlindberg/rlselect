@@ -100,7 +100,7 @@ class UiController(object):
     def _unicodify(self, text):
         return text.decode(
             locale.getpreferredencoding(),
-            "ignore"
+            "replace"
         ).replace("\t", "    ")
 
     def _text(self, screen, y, x, text, style):
