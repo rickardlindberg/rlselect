@@ -4,7 +4,7 @@ from selectlib.reader import read
 
 
 def test_read():
-    assert read(StringIO("one\ntwo\r\nthree\rfour\n")) == [
+    assert extract(read(StringIO("one\ntwo\r\nthree\rfour\n"))) == [
         "one",
         "two",
         "three",
@@ -13,6 +13,14 @@ def test_read():
 
 
 def test_read_skips_duplicates():
-    assert read(StringIO("dup\ndup")) == [
+    assert extract(read(StringIO("dup\ndup"))) == [
         "dup",
+    ]
+
+
+def extract(lines):
+    return [
+        lines.raw(index)
+        for index
+        in range(lines.count())
     ]

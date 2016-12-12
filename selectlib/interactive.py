@@ -1,5 +1,6 @@
 from itertools import islice
-import locale
+
+from selectlib.encoding import to_binary
 
 
 CTRL_W = u"\u0017"
@@ -37,15 +38,9 @@ class UiController(object):
 
     def process_input(self, unicode_character):
         if unicode_character == BS:
-            self._set_term(
-                self._term.decode(
-                    locale.getpreferredencoding()
-                )[:-1].encode(
-                    locale.getpreferredencoding()
-                )
-            )
+            self._set_term(self._term[:-1])
         elif unicode_character == CTRL_W:
-            self._set_term(self._strip_last_word(self._term))
+            self._set_term(strip_last_word(self._term))
         elif unicode_character == CTRL_N:
             self._set_match_highlight(self._match_highlight + 1)
         elif unicode_character == CTRL_P:
@@ -57,18 +52,7 @@ class UiController(object):
         elif unicode_character == TAB and self._tab_exits:
             return ("tab", self._get_selected_item())
         elif ord(unicode_character) >= 32:
-            self._set_term(
-                self._term
-                +
-                unicode_character.encode(locale.getpreferredencoding())
-            )
-
-    def _strip_last_word(self, text):
-        remaining_parts = text.rstrip().split(" ")[:-1]
-        if remaining_parts:
-            return " ".join(remaining_parts) + " "
-        else:
-            return ""
+            self._set_term(self._term + unicode_character)
 
     def _read_size(self, screen):
         y, x = screen.getmaxyx()
@@ -79,7 +63,7 @@ class UiController(object):
         y = self.MATCHES_START_LINE
         for (match_index, (line_index, items)) in enumerate(self._matches):
             self._render_match(
-                screen, y, match_index, self._lines[line_index], items
+                screen, y, match_index, self._lines.unicode(line_index), items
             )
             y += 1
 
@@ -90,44 +74,36 @@ class UiController(object):
             last = 0
             x = 0
             for start, end in items:
-                before = self._unicodify(line[last:start])
-                self._text(screen, y, x, before, "default")
-                x += len(before)
-                after = self._unicodify(line[start:end])
-                self._text(screen, y, x, after, "highlight")
-                x += len(after)
+                x += self._text(screen, y, x, line[last:start], "default")
+                x += self._text(screen, y, x, line[start:end], "highlight")
                 last = end
-            self._text(screen, y, x, self._unicodify(line[last:]), "default")
+            self._text(screen, y, x, line[last:], "default")
 
     def _get_line_text(self, line):
-        return self._unicodify(line).ljust(self._width)
+        return line.ljust(self._width)
 
     def _render_header(self, screen):
         self._text(screen, 1, 0, self._get_status_text(), "status")
 
     def _get_status_text(self):
         return u"selecting among {:,} lines ".format(
-            len(self._lines)
+            self._lines.count()
         ).rjust(self._width)
 
     def _render_term(self, screen):
         self._text(screen, 0, 0, self._get_term_text(), "default")
 
     def _get_term_text(self):
-        return u"> {}".format(self._unicodify(self._term))
-
-    def _unicodify(self, text):
-        return text.decode(
-            locale.getpreferredencoding(),
-            "replace"
-        ).replace("\t", "    ")
+        return u"> {}".format(self._term)
 
     def _text(self, screen, y, x, text, style):
         if x >= self._width:
-            return
+            return 0
+        text = expand_variable_width(text)
         if x + len(text) >= self._width:
             text = text[:self._width-x]
         screen.addstr(y, x, text, style)
+        return len(text)
 
     def _set_term(self, new_term):
         self._term = new_term
@@ -158,8 +134,20 @@ class UiController(object):
 
     def _get_selected_item(self):
         if self._match_highlight != -1:
-            return self._lines[self._matches[self._match_highlight][0]]
+            return self._lines.raw(self._matches[self._match_highlight][0])
         elif len(self._matches) > 0:
-            return self._lines[self._matches[0][0]]
+            return self._lines.raw(self._matches[0][0])
         else:
-            return self._term
+            return to_binary(self._term)
+
+
+def expand_variable_width(text):
+    return text.replace("\t", "    ")
+
+
+def strip_last_word(text):
+    remaining_parts = text.rstrip().split(" ")[:-1]
+    if remaining_parts:
+        return " ".join(remaining_parts) + " "
+    else:
+        return ""

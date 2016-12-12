@@ -1,7 +1,7 @@
 def search(lines, expression):
     match = get_match_fn(expression)
-    for index, line in enumerate(lines):
-        result = match(line)
+    for index in xrange(lines.count()):
+        result = match(lines.unicode(index))
         if result is not None:
             yield (index, marks_to_ranges(result))
 

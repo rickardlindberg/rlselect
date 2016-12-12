@@ -4,6 +4,8 @@ import locale
 import os
 import sys
 
+from selectlib.encoding import to_binary, to_unicode
+
 
 COLOR_MAP = {
     "BACKGROUND": -1,
@@ -67,16 +69,16 @@ def _loop(controller, screen):
         ch = screen.getch()
         if ch > 255:
             if ch == curses.KEY_BACKSPACE:
-                buf = u"\u0008".encode(locale.getpreferredencoding())
+                buf = to_binary(u"\u0008")
             elif ch == curses.KEY_ENTER:
-                buf = u"\u000D".encode(locale.getpreferredencoding())
+                buf = to_binary(u"\u000D")
             else:
                 buf = ""
                 continue
         else:
             buf += chr(ch)
         try:
-            unicode_character = buf.decode(locale.getpreferredencoding())
+            unicode_character = to_unicode(buf, fail=True)
         except UnicodeDecodeError:
             # We are dealing with an incomplete multi-byte character.
             pass

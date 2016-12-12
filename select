@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
 from selectlib.config import Config
+from selectlib.encoding import to_unicode
 from selectlib.filter import search
 from selectlib.interactive import UiController
 from selectlib.reader import read
@@ -38,7 +39,7 @@ def main():
     locale.setlocale(locale.LC_ALL, "")
     (action, result) = get_ui_fn(args)(Config(), UiController(
         lines=read(sys.stdin),
-        term=" ".join(args["<initial-search-terms>"]),
+        term=to_unicode(" ".join(args["<initial-search-terms>"])),
         search_fn=search,
         tab_exits=args["--complete"]
     ))
