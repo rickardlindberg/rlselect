@@ -1,18 +1,7 @@
 from itertools import islice
 
 from selectlib.encoding import to_binary
-
-
-CTRL_W = u"\u0017"
-CTRL_N = u"\u000E"
-CTRL_P = u"\u0010"
-CTRL_C = u"\u0003"
-CTRL_G = u"\u0007"
-ESC = u"\u001B"
-BS = u"\u0008"
-CR = u"\u000D"
-LF = u"\u000A"
-TAB = u"\u0009"
+from selectlib.unicode import *
 
 
 class UiController(object):
@@ -51,7 +40,7 @@ class UiController(object):
             return ("abort", self._get_selected_item())
         elif unicode_character == TAB and self._tab_exits:
             return ("tab", self._get_selected_item())
-        elif ord(unicode_character) >= 32:
+        elif is_printable(unicode_character):
             self._set_term(self._term + unicode_character)
 
     def _read_size(self, screen):

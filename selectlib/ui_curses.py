@@ -5,6 +5,7 @@ import os
 import sys
 
 from selectlib.encoding import to_binary, to_unicode
+from selectlib.unicode import BS, CR
 
 
 COLOR_MAP = {
@@ -69,9 +70,9 @@ def _loop(controller, screen):
         ch = screen.getch()
         if ch > 255:
             if ch == curses.KEY_BACKSPACE:
-                buf = to_binary(u"\u0008")
+                buf = to_binary(BS)
             elif ch == curses.KEY_ENTER:
-                buf = to_binary(u"\u000D")
+                buf = to_binary(CR)
             else:
                 buf = ""
                 continue
