@@ -1,8 +1,8 @@
-from selectlib.encoding import to_unicode
+from selectlib.encoding import to_unicode, to_binary
 
 
 def read(stream):
-    return Lines(unique(stream.read().splitlines()))
+    return Lines(unique(to_unicode(stream.read()).splitlines()))
 
 
 def unique(items):
@@ -24,7 +24,7 @@ class Lines(object):
         return len(self._lines)
 
     def raw(self, index):
-        return self._lines[index]
+        return to_binary(self._lines[index])
 
     def unicode(self, index):
-        return to_unicode(self._lines[index])
+        return self._lines[index]

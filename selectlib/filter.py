@@ -12,14 +12,14 @@ def get_match_fn(expression):
             line = line.lower()
         marks = set()
         for term, term_len in terms:
-            index = line.find(term)
-            if index == -1:
-                # If one term doesn't match, the expression doesn't match.
-                return None
-            else:
+            if term in line:
+                index = line.find(term)
                 while index != -1:
                     marks.update(range(index, index+term_len))
                     index = line.find(term, index+term_len)
+            else:
+                # If one term doesn't match, the expression doesn't match.
+                return None
         return marks
     ignore_case = expression == expression.lower()
     terms = [(term, len(term)) for term in expression.split()]
