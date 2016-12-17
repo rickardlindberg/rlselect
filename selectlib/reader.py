@@ -20,6 +20,9 @@ class Lines(object):
     def __init__(self, lines):
         self._lines = lines
 
+    def iter(self):
+        return enumerate(self._lines)
+
     def count(self):
         return len(self._lines)
 
