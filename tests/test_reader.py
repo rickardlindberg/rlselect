@@ -20,7 +20,7 @@ def test_read_skips_duplicates():
 
 def extract(lines):
     return [
-        lines.raw(index)
+        lines.get(index)
         for index
         in range(lines.count())
     ]

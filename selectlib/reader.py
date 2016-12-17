@@ -1,4 +1,4 @@
-from selectlib.encoding import to_unicode, to_binary
+from selectlib.encoding import to_unicode
 
 
 def read(stream):
@@ -23,8 +23,5 @@ class Lines(object):
     def count(self):
         return len(self._lines)
 
-    def raw(self, index):
-        return to_binary(self._lines[index])
-
-    def unicode(self, index):
+    def get(self, index):
         return self._lines[index]

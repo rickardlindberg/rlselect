@@ -52,7 +52,7 @@ class UiController(object):
         y = self.MATCHES_START_LINE
         for (match_index, (line_index, items)) in enumerate(self._matches):
             self._render_match(
-                screen, y, match_index, self._lines.unicode(line_index), items
+                screen, y, match_index, self._lines.get(line_index), items
             )
             y += 1
 
@@ -123,9 +123,9 @@ class UiController(object):
 
     def _get_selected_item(self):
         if self._match_highlight != -1:
-            return self._lines.raw(self._matches[self._match_highlight][0])
+            return to_binary(self._lines.get(self._matches[self._match_highlight][0]))
         elif len(self._matches) > 0:
-            return self._lines.raw(self._matches[0][0])
+            return to_binary(self._lines.get(self._matches[0][0]))
         else:
             return to_binary(self._term)
 
