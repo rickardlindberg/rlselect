@@ -10,7 +10,7 @@ from selectlib.config import Config
 from selectlib.encoding import to_unicode
 from selectlib.filter import search
 from selectlib.interactive import UiController
-from selectlib.reader import read
+from selectlib.reader import Lines
 from selectlib.terminal import output_to_prompt
 
 
@@ -38,7 +38,7 @@ def main():
         success()
     locale.setlocale(locale.LC_ALL, "")
     (action, result) = get_ui_fn(args)(Config(), UiController(
-        lines=read(sys.stdin),
+        lines=Lines.from_stream(sys.stdin, locale.getpreferredencoding()),
         term=to_unicode(" ".join(args["<initial-search-terms>"])),
         search_fn=search,
         tab_exits=args["--complete"]

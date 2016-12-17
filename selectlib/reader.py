@@ -1,8 +1,20 @@
-from selectlib.encoding import to_unicode
+class Lines(object):
 
+    @staticmethod
+    def from_stream(stream, encoding):
+        return Lines(stream.read().decode(encoding, "replace").splitlines())
 
-def read(stream):
-    return Lines(unique(to_unicode(stream.read()).splitlines()))
+    def __init__(self, lines):
+        self._lines = unique(lines)
+
+    def iter(self):
+        return enumerate(self._lines)
+
+    def count(self):
+        return len(self._lines)
+
+    def get(self, index):
+        return self._lines[index]
 
 
 def unique(items):
@@ -13,18 +25,3 @@ def unique(items):
             seen[item] = True
             result.append(item)
     return result
-
-
-class Lines(object):
-
-    def __init__(self, lines):
-        self._lines = lines
-
-    def iter(self):
-        return enumerate(self._lines)
-
-    def count(self):
-        return len(self._lines)
-
-    def get(self, index):
-        return self._lines[index]
