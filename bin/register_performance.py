@@ -51,7 +51,7 @@ def time_search(number_of_lines, line_fn, term, max_results):
             in range(number_of_lines)
         ]))
         t1 = timeit.default_timer()
-        x = list(itertools.islice(search(read(stdin), term), max_results))
+        list(itertools.islice(search(read(stdin), term), max_results))
         t2 = timeit.default_timer()
         results.append(t2 - t1)
     return min(results)
