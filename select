@@ -7,7 +7,6 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
 from selectlib.config import Config
-from selectlib.encoding import to_unicode
 from selectlib.filter import search
 from selectlib.interactive import UiController
 from selectlib.reader import Lines
@@ -37,11 +36,15 @@ def main():
         usage()
         success()
     locale.setlocale(locale.LC_ALL, "")
-    input_encoding = locale.getpreferredencoding()
-    output_encoding = locale.getpreferredencoding()
+    system_encoding = locale.getpreferredencoding()
+    input_encoding = system_encoding
+    output_encoding = system_encoding
     (action, result) = get_ui_fn(args)(Config(), UiController(
         lines=Lines.from_stream(sys.stdin, input_encoding),
-        term=to_unicode(" ".join(args["<initial-search-terms>"])),
+        term=(" ".join(args["<initial-search-terms>"])).decode(
+            system_encoding,
+            "replace"
+        ),
         search_fn=search,
         tab_exits=args["--complete"]
     ))
