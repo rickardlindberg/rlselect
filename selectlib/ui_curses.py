@@ -4,7 +4,7 @@ import locale
 import os
 import sys
 
-from selectlib.encoding import to_binary, to_unicode
+from selectlib.encoding import to_unicode
 from selectlib.unicode import BS, CR
 
 
@@ -70,9 +70,9 @@ def _loop(controller, screen):
         ch = screen.getch()
         if ch > 255:
             if ch == curses.KEY_BACKSPACE:
-                buf = to_binary(BS)
+                buf = BS.encode(locale.getpreferredencoding())
             elif ch == curses.KEY_ENTER:
-                buf = to_binary(CR)
+                buf = CR.encode(locale.getpreferredencoding())
             else:
                 buf = ""
                 continue
