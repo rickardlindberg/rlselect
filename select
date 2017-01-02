@@ -17,7 +17,7 @@ USAGE = """\
 I select stuff.
 
 Usage:
-  {name} [--complete] [--gui] [--] <initial-search-terms>...
+  {name} [--complete] [--gui] [--] [<initial-search-term>...]
   {name} (-h | --help)
 
 Options:
@@ -41,7 +41,7 @@ def main():
     output_encoding = system_encoding
     (action, result) = get_ui_fn(args)(Config(), UiController(
         lines=Lines.from_stream(sys.stdin, input_encoding),
-        term=(" ".join(args["<initial-search-terms>"])).decode(
+        term=(" ".join(args["<initial-search-term>"])).decode(
             system_encoding,
             "replace"
         ),
@@ -75,7 +75,7 @@ def parse_args():
         "--help": False,
         "--complete": False,
         "--gui": False,
-        "<initial-search-terms>": [],
+        "<initial-search-term>": [],
     }
     rest = sys.argv[1:]
     if rest == ["-h"]:
@@ -92,10 +92,10 @@ def parse_args():
             args["--gui"] = True
             rest = rest[1:]
         elif rest[:1] == ["--"]:
-            args["<initial-search-terms>"] = rest[1:]
+            args["<initial-search-term>"] = rest[1:]
             rest = []
         else:
-            args["<initial-search-terms>"] = rest
+            args["<initial-search-term>"] = rest
             rest = []
     return args
 
