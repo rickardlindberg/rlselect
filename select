@@ -38,6 +38,7 @@ def main():
         success()
     locale.setlocale(locale.LC_ALL, "")
     input_encoding = locale.getpreferredencoding()
+    output_encoding = locale.getpreferredencoding()
     (action, result) = get_ui_fn(args)(Config(), UiController(
         lines=Lines.from_stream(sys.stdin, input_encoding),
         term=to_unicode(" ".join(args["<initial-search-terms>"])),
@@ -45,13 +46,13 @@ def main():
         tab_exits=args["--complete"]
     ))
     if args["--complete"] and action == "tab":
-        output_to_prompt(result)
+        output_to_prompt(result.encode(output_encoding))
         success()
     elif args["--complete"] and action == "select":
-        output_to_prompt(result+"\n")
+        output_to_prompt(result.encode(output_encoding)+"\n")
         success()
     elif not args["--complete"] and action == "select":
-        print(result)
+        print(result.encode(output_encoding))
         success()
     fail()
 
