@@ -37,8 +37,9 @@ def main():
         usage()
         success()
     locale.setlocale(locale.LC_ALL, "")
+    input_encoding = locale.getpreferredencoding()
     (action, result) = get_ui_fn(args)(Config(), UiController(
-        lines=Lines.from_stream(sys.stdin, locale.getpreferredencoding()),
+        lines=Lines.from_stream(sys.stdin, input_encoding),
         term=to_unicode(" ".join(args["<initial-search-terms>"])),
         search_fn=search,
         tab_exits=args["--complete"]
