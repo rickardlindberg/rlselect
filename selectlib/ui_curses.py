@@ -4,7 +4,6 @@ import locale
 import os
 import sys
 
-from selectlib.encoding import to_unicode
 from selectlib.unicode import BS, CR
 
 
@@ -79,7 +78,7 @@ def _loop(controller, screen):
         else:
             buf += chr(ch)
         try:
-            unicode_character = to_unicode(buf, fail=True)
+            unicode_character = buf.decode(locale.getpreferredencoding())
         except UnicodeDecodeError:
             # We are dealing with an incomplete multi-byte character.
             pass
