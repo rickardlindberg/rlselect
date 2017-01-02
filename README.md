@@ -63,6 +63,20 @@ Open a file, buffer, or tag from vim/gvim:
             cat tags | awk '{ print "t " $1 }'
         fi
 
+    In ~/bin/find-files
+
+        #!/usr/bin/env bash
+
+        find . \
+            -type d -name .git        -prune -o \
+            -type d -name .hg         -prune -o \
+            -type d -name __pycache__ -prune -o \
+            -type d -name venv        -prune -o \
+            -type d -name .cache      -prune -o \
+            -type f -name '.*swp'     -prune -o \
+            -type f -name '*pyc'      -prune -o \
+            -type f -print
+
 Open a file in vim:
 
     vim $(find | ./select)
