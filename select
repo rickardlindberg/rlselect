@@ -10,7 +10,7 @@ from selectlib.config import Config
 from selectlib.filter import search
 from selectlib.interactive import UiController
 from selectlib.reader import Lines
-from selectlib.terminal import output_to_prompt
+from selectlib.writer import output_to_prompt
 
 
 USAGE = """\
