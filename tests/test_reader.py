@@ -1,6 +1,6 @@
 import StringIO
 
-from selectlib.reader import Lines
+from rlselectlib.reader import Lines
 
 
 def test_splits_stream_into_lines():

@@ -5,8 +5,8 @@ import StringIO
 import sys
 import timeit
 
-from selectlib.filter import search
-from selectlib.reader import read
+from rlselectlib.filter import search
+from rlselectlib.reader import read
 
 
 NUMBER_OF_MEASUREMENTS = 10

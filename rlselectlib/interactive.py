@@ -1,6 +1,6 @@
 from itertools import islice
 
-from selectlib.unicode import (
+from rlselectlib.unicode import (
     CTRL_W,
     CTRL_N,
     CTRL_P,

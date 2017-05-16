@@ -1,6 +1,6 @@
-# Select
+# rlselect
 
-Select allows you to select a line interactively by searching. It works by
+rlselect allows you to select a line interactively by searching. It works by
 reading input from stdin and printing the selected line to stdout. You can
 therefore use it to search anything, and it is up to you what to do with the
 selected line.
@@ -13,13 +13,13 @@ Replace `Ctrl-R` in Bash:
 
     In ~/.bashrc:
 
-        if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a select-history \C-j"'; fi
+        if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a rlselect-history \C-j"'; fi
 
-    In ~/bin/select-history:
+    In ~/bin/rlselect-history:
 
         #!/usr/bin/env bash
 
-        tac ~/.bash_history | select --complete -- "$@"
+        tac ~/.bash_history | rlselect --complete -- "$@"
 
 Open a file, buffer, or tag from vim/gvim:
 
@@ -27,9 +27,9 @@ Open a file, buffer, or tag from vim/gvim:
 
         function! Select()
             if has("gui_running")
-                let select_command="select --gui"
+                let select_command="rlselect --gui"
             else
-                let select_command="select"
+                let select_command="rlselect"
             endif
             let bufnrs = filter(range(1, bufnr("$")), 'buflisted(v:val)')
             let buffers = map(bufnrs, 'bufname(v:val)')
@@ -79,11 +79,11 @@ Open a file, buffer, or tag from vim/gvim:
 
 Open a file in vim:
 
-    vim $(find | ./select)
+    vim $(find | rlselect)
 
 ## History
 
-Select is inspired by [hstr](https://github.com/dvorka/hstr) and
+rlselect is inspired by [hstr](https://github.com/dvorka/hstr) and
 [selecta](https://github.com/garybernhardt/selecta).
 
 I was using hstr as a replacement for `Ctrl-R` in Bash. I found it excellent

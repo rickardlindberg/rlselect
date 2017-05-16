@@ -1,5 +1,5 @@
-from selectlib.filter import search
-from selectlib.reader import Lines
+from rlselectlib.filter import search
+from rlselectlib.reader import Lines
 
 
 def test_filter():

@@ -4,7 +4,7 @@ import locale
 import os
 import sys
 
-from selectlib.unicode import BS, CR
+from rlselectlib.unicode import BS, CR
 
 
 COLOR_MAP = {

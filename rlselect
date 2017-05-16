@@ -6,11 +6,11 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-from selectlib.config import Config
-from selectlib.filter import search
-from selectlib.interactive import UiController
-from selectlib.reader import Lines
-from selectlib.writer import output_to_prompt
+from rlselectlib.config import Config
+from rlselectlib.filter import search
+from rlselectlib.interactive import UiController
+from rlselectlib.reader import Lines
+from rlselectlib.writer import output_to_prompt
 
 
 USAGE = """\
@@ -62,10 +62,10 @@ def main():
 
 def get_ui_fn(args):
     if args["--gui"]:
-        from selectlib.ui_wx import wx_ui_run
+        from rlselectlib.ui_wx import wx_ui_run
         return wx_ui_run
     else:
-        from selectlib.ui_curses import curses_ui_run
+        from rlselectlib.ui_curses import curses_ui_run
         return curses_ui_run
 
 
