@@ -5,7 +5,7 @@ reading input from stdin and printing the selected line to stdout. You can
 therefore use it to search anything, and it is up to you what to do with the
 selected line.
 
-![Demo](https://raw.github.com/rickardlindberg/dotfiles/master/select/demo.gif)
+![Demo](https://raw.github.com/rickardlindberg/rlselect/master/demo.gif)
 
 ## Examples
 
