@@ -1,3 +1,4 @@
+from collections import namedtuple
 from itertools import islice
 
 from rlselectlib.unicode import (
@@ -15,6 +16,14 @@ from rlselectlib.unicode import (
 )
 
 
+Action = namedtuple("Action", ["abort", "name"])
+ACTION_ENTER = Action(False, "enter")
+ACTION_TAB = Action(False, "tab")
+ACTION_ESC = Action(True, "esc")
+ACTION_CTRL_C = Action(True, "ctrl-c")
+ACTION_CTRL_G = Action(True, "ctrl-g")
+
+
 class UiController(object):
 
     MATCHES_START_LINE = 2
@@ -23,7 +32,15 @@ class UiController(object):
         self._lines = lines
         self._term = term
         self._search_fn = search_fn
-        self._tab_exits = tab_exits
+        self._action_map = {
+            CR: ACTION_ENTER,
+            LF: ACTION_ENTER,
+            ESC: ACTION_ESC,
+            CTRL_C: ACTION_CTRL_C,
+            CTRL_G: ACTION_CTRL_G,
+        }
+        if tab_exits:
+            self._action_map[TAB] = ACTION_TAB
 
     def setup(self, screen):
         self._read_size(screen)
@@ -45,12 +62,11 @@ class UiController(object):
             self._set_match_highlight(self._match_highlight + 1)
         elif unicode_character == CTRL_P:
             self._set_match_highlight(self._match_highlight - 1)
-        elif unicode_character in (CR, LF):
-            return ("select", self._get_selected_item())
-        elif unicode_character in (ESC, CTRL_C, CTRL_G):
-            return ("abort", self._get_selected_item())
-        elif unicode_character == TAB and self._tab_exits:
-            return ("tab", self._get_selected_item())
+        elif unicode_character in self._action_map:
+            return (
+                self._action_map[unicode_character],
+                self._get_selected_item()
+            )
         elif is_printable(unicode_character):
             self._set_term(self._term + unicode_character)
 

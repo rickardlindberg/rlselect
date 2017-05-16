@@ -10,19 +10,18 @@ from rlselectlib.config import Config
 from rlselectlib.filter import search
 from rlselectlib.interactive import UiController
 from rlselectlib.reader import Lines
-from rlselectlib.writer import output_to_prompt
 
 
 USAGE = """\
 I select stuff.
 
 Usage:
-  {name} [--complete] [--gui] [--] [<initial-search-term>...]
+  {name} [--tab] [--action] [--gui] [--] [<initial-search-term>...]
   {name} (-h | --help)
 
 Options:
-  --complete    Run in complete mode:
-                write result to console instead of stdout.
+  --tab         Allow <Tab> to select an item.
+  --action      Print the action taken on the first line.
   --gui         Use GUI version instead of console version.
   -h,  --help   Show this message and exit.
 """.format(
@@ -46,18 +45,15 @@ def main():
             "replace"
         ),
         search_fn=search,
-        tab_exits=args["--complete"]
+        tab_exits=args["--tab"]
     ))
-    if args["--complete"] and action == "tab":
-        output_to_prompt(result.encode(output_encoding))
-        success()
-    elif args["--complete"] and action == "select":
-        output_to_prompt(result.encode(output_encoding)+"\n")
-        success()
-    elif not args["--complete"] and action == "select":
+    if args["--action"]:
+        print(action.name)
+    if action.abort:
+        fail()
+    else:
         print(result.encode(output_encoding))
         success()
-    fail()
 
 
 def get_ui_fn(args):
@@ -73,7 +69,8 @@ def parse_args():
     args = {
         "-h": False,
         "--help": False,
-        "--complete": False,
+        "--tab": False,
+        "--action": False,
         "--gui": False,
         "<initial-search-term>": [],
     }
@@ -85,8 +82,11 @@ def parse_args():
         args["--help"] = True
         rest = []
     while rest:
-        if rest[:1] == ["--complete"]:
-            args["--complete"] = True
+        if rest[:1] == ["--tab"]:
+            args["--tab"] = True
+            rest = rest[1:]
+        if rest[:1] == ["--action"]:
+            args["--action"] = True
             rest = rest[1:]
         elif rest[:1] == ["--gui"]:
             args["--gui"] = True
