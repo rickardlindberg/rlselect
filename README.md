@@ -7,6 +7,20 @@ selected line.
 
 ![Demo](https://raw.github.com/rickardlindberg/rlselect/master/demo.gif)
 
+## Shortcuts
+
+Shortcut | Meaning
+---------|------------------------------------------
+BS       | Erase last typed character.
+CTRL+W   | Erase last typed word.
+CTRL+N   | Move to the next match.
+CTRL+P   | Move to the previous match.
+ENTER    | Select the current.
+TAB      | Select the current if `--tab` was given.
+ESC      | Exit without selecting.
+CTRL+C   | Exit without selecting.
+CTRL+G   | Exit without selecting.
+
 ## Examples
 
 Replace `Ctrl-R` in Bash (requires the extra `rlselect-history`:
