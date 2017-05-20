@@ -9,32 +9,26 @@ selected line.
 
 ## Examples
 
-Replace `Ctrl-R` in Bash:
+Replace `Ctrl-R` in Bash (requires the extra `rlselect-history`:
 
     In ~/.bashrc:
 
         if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a rlselect-history \C-j"'; fi
 
-    In ~/bin/rlselect-history:
-
-        #!/usr/bin/env bash
-
-        tac ~/.bash_history | rlselect --complete -- "$@"
-
 Open a file, buffer, or tag from vim/gvim:
 
     In ~/.vimrc:
 
-        function! Select()
+        function! Rlselect()
             if has("gui_running")
-                let select_command="rlselect --gui"
+                let rlselect_command="rlselect --gui"
             else
-                let select_command="rlselect"
+                let rlselect_command="rlselect"
             endif
             let bufnrs = filter(range(1, bufnr("$")), 'buflisted(v:val)')
             let buffers = map(bufnrs, 'bufname(v:val)')
             let buffersout = join(buffers, "\n") . "\n"
-            let selection = system("vim-find-select | " . select_command, buffersout)
+            let selection = system("vim-find-select | " . rlselect_command, buffersout)
             if ! has("gui_running")
                 redraw!
             endif
@@ -43,11 +37,11 @@ Open a file, buffer, or tag from vim/gvim:
             elseif strpart(selection, 0, 1) == "t"
                 exec ":tj " . strpart(selection, 2)
             elseif strlen(selection) > 0
-                exec ":e " . strpart(selection, 2)
+                exec ":e " . substitute(strpart(selection, 2), " ", "\\\\ ", "g")
             endif
         endfunction
 
-        nmap <C-t> :call Select()<CR>
+        nmap <C-t> :call Rlselect()<CR>
 
     In ~/bin/vim-find-select:
 
