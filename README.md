@@ -23,7 +23,7 @@ CTRL+G   | Exit without selecting.
 
 ## Examples
 
-Replace `Ctrl-R` in Bash (requires the extra `rlselect-history`:
+Replace `Ctrl-R` in Bash (requires the extra `rlselect-history`):
 
     In ~/.bashrc:
 
