@@ -56,15 +56,18 @@ def main():
     system_encoding = locale.getpreferredencoding()
     input_encoding = system_encoding
     output_encoding = system_encoding
-    (action, result) = get_ui_fn(args)(Config(), UiController(
-        lines=Lines.from_stream(sys.stdin, input_encoding),
-        term=(" ".join(args["<initial-search-term>"])).decode(
-            system_encoding,
-            "replace"
-        ),
-        search_fn=search,
-        tab_exits=args["--tab"]
-    ))
+    (action, result) = get_ui_fn(args)(
+        Config(os.path.expanduser("~/.rlselect.cfg")),
+        UiController(
+            lines=Lines.from_stream(sys.stdin, input_encoding),
+            term=(" ".join(args["<initial-search-term>"])).decode(
+                system_encoding,
+                "replace"
+            ),
+            search_fn=search,
+            tab_exits=args["--tab"]
+        )
+    )
     if args["--action"]:
         print(action.name)
     if action.abort:

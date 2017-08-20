@@ -21,6 +21,30 @@ ESC      | Exit without selecting.
 CTRL+C   | Exit without selecting.
 CTRL+G   | Exit without selecting.
 
+## Default configuration
+
+~/.rlselect.cfg
+
+    [theme]
+    highlight_fg = RED
+    highlight_bg = BACKGROUND
+    selection_fg = WHITE
+    selection_bg = GREEN
+    gui_font_size = 11
+    gui_size = 900, 648
+
+    [rgb]
+    BACKGROUND = 253, 246, 227
+    FOREGROUND = 101, 123, 131
+    BLACK = 7, 54, 66
+    BLUE = 38, 139, 210
+    CYAN = 42, 161, 152
+    GREEN = 133, 153, 0
+    MAGENTA = 211, 54, 130
+    RED = 220, 50, 47
+    WHITE = 238, 232, 213
+    YELLOW = 181, 137, 0
+
 ## Examples
 
 Replace `Ctrl-R` in Bash (requires the extra `rlselect-history`):
