@@ -406,10 +406,10 @@ def get_ui_fn(args):
                 self._controller.render(self)
 
             def getmaxyx(self):
-                ww, wh = self.GetSizeTuple()
+                ww, wh = self.GetSize()
                 max_y = int(wh) / int(self._fh)
                 max_x = int(ww) / int(self._fw)
-                return (max_y, max_x)
+                return (int(max_y), int(max_x))
 
             def erase(self):
                 self._commands = []
@@ -418,11 +418,10 @@ def get_ui_fn(args):
                 self._commands.append((y, x, text, style))
 
             def refresh(self):
-                width, height = self.GetSizeTuple()
-                self._surface_bitmap = wx.EmptyBitmap(width, height)
+                width, height = self.GetSize()
+                self._surface_bitmap = wx.Bitmap(width, height)
                 memdc = wx.MemoryDC()
                 memdc.SelectObject(self._surface_bitmap)
-                memdc.BeginDrawing()
                 memdc.SetBackground(wx.Brush(
                     self._config.get_rgb("BACKGROUND"), wx.SOLID
                 ))
@@ -448,7 +447,6 @@ def get_ui_fn(args):
                     memdc.SetTextBackground(bg)
                     memdc.SetTextForeground(fg)
                     memdc.DrawText(text, x*self._fw, y*self._fh)
-                memdc.EndDrawing()
                 del memdc
                 self.Refresh()
                 self.Update()
@@ -464,14 +462,14 @@ def get_ui_fn(args):
                 self._find_text_size()
 
             def _find_text_size(self):
-                bitmap = wx.EmptyBitmap(100, 100)
+                bitmap = wx.Bitmap(100, 100)
                 memdc = wx.MemoryDC()
                 memdc.SetFont(self._base_font)
                 memdc.SelectObject(bitmap)
                 self._fw, self._fh = memdc.GetTextExtent(".")
 
             def _on_key_down(self, evt):
-                result = self._controller.process_input(unichr(evt.GetUnicodeKey()))
+                result = self._controller.process_input(chr(evt.GetUnicodeKey()))
                 if result:
                     self._app.set_result(result)
                     self.GetParent().Close()
@@ -479,10 +477,8 @@ def get_ui_fn(args):
 
             def _on_paint(self, event):
                 dc = wx.AutoBufferedPaintDC(self)
-                dc.BeginDrawing()
                 if self._surface_bitmap:
                     dc.DrawBitmap(self._surface_bitmap, 0, 0, True)
-                dc.EndDrawing()
         return wx_ui_run
     else:
         import contextlib

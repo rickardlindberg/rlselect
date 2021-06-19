@@ -708,7 +708,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "        ww, wh = self.GetSizeTuple()",
+                    "text": "        ww, wh = self.GetSize()",
                     "type": "line"
                 },
                 {
@@ -720,7 +720,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "        return (max_y, max_x)",
+                    "text": "        return (int(max_y), int(max_x))",
                     "type": "line"
                 },
                 {
@@ -756,11 +756,11 @@
                     "type": "line"
                 },
                 {
-                    "text": "        width, height = self.GetSizeTuple()",
+                    "text": "        width, height = self.GetSize()",
                     "type": "line"
                 },
                 {
-                    "text": "        self._surface_bitmap = wx.EmptyBitmap(width, height)",
+                    "text": "        self._surface_bitmap = wx.Bitmap(width, height)",
                     "type": "line"
                 },
                 {
@@ -769,10 +769,6 @@
                 },
                 {
                     "text": "        memdc.SelectObject(self._surface_bitmap)",
-                    "type": "line"
-                },
-                {
-                    "text": "        memdc.BeginDrawing()",
                     "type": "line"
                 },
                 {
@@ -876,10 +872,6 @@
                     "type": "line"
                 },
                 {
-                    "text": "        memdc.EndDrawing()",
-                    "type": "line"
-                },
-                {
                     "text": "        del memdc",
                     "type": "line"
                 },
@@ -940,7 +932,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "        bitmap = wx.EmptyBitmap(100, 100)",
+                    "text": "        bitmap = wx.Bitmap(100, 100)",
                     "type": "line"
                 },
                 {
@@ -968,7 +960,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "        result = self._controller.process_input(unichr(evt.GetUnicodeKey()))",
+                    "text": "        result = self._controller.process_input(chr(evt.GetUnicodeKey()))",
                     "type": "line"
                 },
                 {
@@ -1000,19 +992,11 @@
                     "type": "line"
                 },
                 {
-                    "text": "        dc.BeginDrawing()",
-                    "type": "line"
-                },
-                {
                     "text": "        if self._surface_bitmap:",
                     "type": "line"
                 },
                 {
                     "text": "            dc.DrawBitmap(self._surface_bitmap, 0, 0, True)",
-                    "type": "line"
-                },
-                {
-                    "text": "        dc.EndDrawing()",
                     "type": "line"
                 }
             ],
