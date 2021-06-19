@@ -346,10 +346,7 @@ def main():
         Config(os.path.expanduser("~/.rlselect.cfg")),
         UiController(
             lines=Lines.from_stream(sys.stdin),
-            term=(" ".join(args["<initial-search-term>"])).decode(
-                system_encoding,
-                "replace"
-            ),
+            term=(" ".join(args["<initial-search-term>"])),
             search_fn=search,
             tab_exits=args["--tab"]
         )

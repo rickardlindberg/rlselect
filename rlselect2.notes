@@ -3278,19 +3278,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "            term=(\" \".join(args[\"<initial-search-term>\"])).decode(",
-                    "type": "line"
-                },
-                {
-                    "text": "                system_encoding,",
-                    "type": "line"
-                },
-                {
-                    "text": "                \"replace\"",
-                    "type": "line"
-                },
-                {
-                    "text": "            ),",
+                    "text": "            term=(\" \".join(args[\"<initial-search-term>\"])),",
                     "type": "line"
                 },
                 {
