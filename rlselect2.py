@@ -18,7 +18,7 @@
 # along with rlselect.  If not, see <http://www.gnu.org/licenses/>.
 
 from collections import namedtuple
-from ConfigParser import RawConfigParser
+from configparser import RawConfigParser
 from itertools import islice
 import locale
 import os

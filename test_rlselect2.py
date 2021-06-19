@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with rlselect.  If not, see <http://www.gnu.org/licenses/>.
 
-from mock import Mock
+from io import BytesIO
+from unittest.mock import Mock
 import pytest
-import StringIO
 
 from rlselect2 import (
     Action,
@@ -190,7 +190,7 @@ def create_controller(tab_exits=False):
     return controller
 
 def test_splits_stream_into_lines():
-    assert get_lines("one\ntwo\r\nthree\rfour\n", "ascii") == [
+    assert get_lines(b"one\ntwo\r\nthree\rfour\n", "ascii") == [
         u"one",
         u"two",
         u"three",
@@ -198,18 +198,18 @@ def test_splits_stream_into_lines():
     ]
 
 def test_skips_duplicate_lines():
-    assert get_lines("dup\ndup", "ascii") == [
+    assert get_lines(b"dup\ndup", "ascii") == [
         u"dup",
     ]
 
 def test_converts_unknown_bytes_to_special_character():
     UNICODCE_UNKNOWN_CHAR = u"\uFFFD"
-    assert get_lines("a\xFFb", "ascii") == [
+    assert get_lines(b"a\xFFb", "ascii") == [
         u"a{0}b".format(UNICODCE_UNKNOWN_CHAR),
     ]
 
 def get_lines(binary, encoding):
-    lines = Lines.from_stream(StringIO.StringIO(binary), encoding)
+    lines = Lines.from_stream(BytesIO(binary), encoding)
     return [
         lines.get(index)
         for index

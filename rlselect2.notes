@@ -1097,15 +1097,15 @@
                     "type": "line"
                 },
                 {
-                    "text": "from mock import Mock",
+                    "text": "from io import BytesIO",
+                    "type": "line"
+                },
+                {
+                    "text": "from unittest.mock import Mock",
                     "type": "line"
                 },
                 {
                     "text": "import pytest",
-                    "type": "line"
-                },
-                {
-                    "text": "import StringIO",
                     "type": "line"
                 },
                 {
@@ -1797,7 +1797,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "    assert get_lines(\"one\\ntwo\\r\\nthree\\rfour\\n\", \"ascii\") == [",
+                    "text": "    assert get_lines(b\"one\\ntwo\\r\\nthree\\rfour\\n\", \"ascii\") == [",
                     "type": "line"
                 },
                 {
@@ -1829,7 +1829,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "    assert get_lines(\"dup\\ndup\", \"ascii\") == [",
+                    "text": "    assert get_lines(b\"dup\\ndup\", \"ascii\") == [",
                     "type": "line"
                 },
                 {
@@ -1853,7 +1853,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "    assert get_lines(\"a\\xFFb\", \"ascii\") == [",
+                    "text": "    assert get_lines(b\"a\\xFFb\", \"ascii\") == [",
                     "type": "line"
                 },
                 {
@@ -1873,7 +1873,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "    lines = Lines.from_stream(StringIO.StringIO(binary), encoding)",
+                    "text": "    lines = Lines.from_stream(BytesIO(binary), encoding)",
                     "type": "line"
                 },
                 {
@@ -1990,7 +1990,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "from ConfigParser import RawConfigParser",
+                    "text": "from configparser import RawConfigParser",
                     "type": "line"
                 },
                 {
