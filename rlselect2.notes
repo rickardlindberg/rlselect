@@ -1029,7 +1029,7 @@
             ],
             "fragments": [
                 {
-                    "text": "# Copyright (C) 2017  Rickard Lindberg",
+                    "text": "# Copyright (C) 2017, 2021  Rickard Lindberg",
                     "type": "line"
                 },
                 {
@@ -1918,7 +1918,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "# Copyright (C) 2017  Rickard Lindberg",
+                    "text": "# Copyright (C) 2017, 2021  Rickard Lindberg",
                     "type": "line"
                 },
                 {

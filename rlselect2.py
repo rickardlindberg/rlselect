@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2017  Rickard Lindberg
+# Copyright (C) 2017, 2021  Rickard Lindberg
 #
 # This file is part of rlselect.
 #
