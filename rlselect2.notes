@@ -265,7 +265,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "    buf = \"\"",
+                    "text": "    buf = b\"\"",
                     "type": "line"
                 },
                 {
@@ -305,7 +305,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "                buf = \"\"",
+                    "text": "                buf = b\"\"",
                     "type": "line"
                 },
                 {
@@ -317,7 +317,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "            buf += chr(ch)",
+                    "text": "            buf += bytes([ch])",
                     "type": "line"
                 },
                 {
@@ -345,7 +345,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "            buf = \"\"",
+                    "text": "            buf = b\"\"",
                     "type": "line"
                 },
                 {

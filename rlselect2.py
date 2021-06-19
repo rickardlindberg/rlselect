@@ -542,7 +542,7 @@ def get_ui_fn(args):
 
         def _loop(controller, screen):
             patched_screen = _Screen(screen)
-            buf = ""
+            buf = b""
             while True:
                 controller.render(patched_screen)
                 ch = screen.getch()
@@ -552,17 +552,17 @@ def get_ui_fn(args):
                     elif ch == curses.KEY_ENTER:
                         buf = CR.encode(locale.getpreferredencoding())
                     else:
-                        buf = ""
+                        buf = b""
                         continue
                 else:
-                    buf += chr(ch)
+                    buf += bytes([ch])
                 try:
                     unicode_character = buf.decode(locale.getpreferredencoding())
                 except UnicodeDecodeError:
                     # We are dealing with an incomplete multi-byte character.
                     pass
                 else:
-                    buf = ""
+                    buf = b""
                     result = controller.process_input(unicode_character)
                     if result:
                         return result
