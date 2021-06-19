@@ -3254,14 +3254,6 @@
                     "type": "line"
                 },
                 {
-                    "text": "    system_encoding = locale.getpreferredencoding()",
-                    "type": "line"
-                },
-                {
-                    "text": "    output_encoding = system_encoding",
-                    "type": "line"
-                },
-                {
                     "text": "    (action, result) = get_ui_fn(args)(",
                     "type": "line"
                 },
@@ -3318,7 +3310,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "        print(result.encode(output_encoding))",
+                    "text": "        print(result)",
                     "type": "line"
                 },
                 {

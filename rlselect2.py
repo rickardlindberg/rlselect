@@ -340,8 +340,6 @@ def main():
         usage()
         success()
     locale.setlocale(locale.LC_ALL, "")
-    system_encoding = locale.getpreferredencoding()
-    output_encoding = system_encoding
     (action, result) = get_ui_fn(args)(
         Config(os.path.expanduser("~/.rlselect.cfg")),
         UiController(
@@ -356,7 +354,7 @@ def main():
     if action.abort:
         fail()
     else:
-        print(result.encode(output_encoding))
+        print(result)
         success()
 
 def get_ui_fn(args):
