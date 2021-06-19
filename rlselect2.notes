@@ -1,0 +1,3608 @@
+{
+    "links": {
+        "0b8165dea76a41138157eaa6c1652ab4": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-06-19T12:01:19.165311",
+            "to": "60a53ecd900547f1b12465ccbe961b1b"
+        },
+        "5ae9c96d9ba4404e8df4ed93c23a311a": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-06-19T12:13:14.932160",
+            "to": "64add2c2c062467fbe51fbf81b468ab9"
+        },
+        "6038a080bc404623b35d6c148d7ca3b5": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-06-19T11:52:08.954586",
+            "to": "f83312733dd34f21be7a8a615a0acaaa"
+        },
+        "60af95bc62c94f5d95355bdf85f123b6": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-06-19T11:52:38.879777",
+            "to": "6f7ec20770ba4748a2726f9813be3535"
+        },
+        "8205cbfdc870418087646261e15318c9": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-06-19T12:02:59.056426",
+            "to": "42dfdb0812dc4fe09d1fe32f8ccdc22c"
+        }
+    },
+    "notes": {
+        "243699f5ca5f4e60862da6fac02f4c5e": {
+            "links": [],
+            "tags": [
+                "title"
+            ],
+            "text": "rlselect2\n",
+            "timestamp_created": "2021-06-19T11:51:56.011783",
+            "type": "text"
+        },
+        "42dfdb0812dc4fe09d1fe32f8ccdc22c": {
+            "chunkpath": [
+                "curses_ui"
+            ],
+            "filepath": [
+                "rlselect2.py"
+            ],
+            "fragments": [
+                {
+                    "text": "import contextlib",
+                    "type": "line"
+                },
+                {
+                    "text": "import curses",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "COLOR_MAP = {",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"BACKGROUND\": -1,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"FOREGROUND\": -1,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"BLACK\": curses.COLOR_BLACK,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"BLUE\": curses.COLOR_BLUE,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"CYAN\": curses.COLOR_CYAN,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"GREEN\": curses.COLOR_GREEN,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"MAGENTA\": curses.COLOR_MAGENTA,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"RED\": curses.COLOR_RED,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"WHITE\": curses.COLOR_WHITE,",
+                    "type": "line"
+                },
+                {
+                    "text": "    \"YELLOW\": curses.COLOR_YELLOW,",
+                    "type": "line"
+                },
+                {
+                    "text": "}",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def curses_ui_run(config, controller):",
+                    "type": "line"
+                },
+                {
+                    "text": "    with _redirect_terminal():",
+                    "type": "line"
+                },
+                {
+                    "text": "        return curses.wrapper(_run, config, controller)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "@contextlib.contextmanager",
+                    "type": "line"
+                },
+                {
+                    "text": "def _redirect_terminal():",
+                    "type": "line"
+                },
+                {
+                    "text": "    stdin_fileno = sys.stdin.fileno()",
+                    "type": "line"
+                },
+                {
+                    "text": "    stdout_fileno = sys.stdout.fileno()",
+                    "type": "line"
+                },
+                {
+                    "text": "    process_stdin = os.dup(sys.stdin.fileno())",
+                    "type": "line"
+                },
+                {
+                    "text": "    process_stdout = os.dup(sys.stdout.fileno())",
+                    "type": "line"
+                },
+                {
+                    "text": "    try:",
+                    "type": "line"
+                },
+                {
+                    "text": "        terminal_stdin = open(\"/dev/tty\", \"rb\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        terminal_stdout = open(\"/dev/tty\", \"wb\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        os.dup2(terminal_stdin.fileno(), stdin_fileno)",
+                    "type": "line"
+                },
+                {
+                    "text": "        os.dup2(terminal_stdout.fileno(), stdout_fileno)",
+                    "type": "line"
+                },
+                {
+                    "text": "        yield",
+                    "type": "line"
+                },
+                {
+                    "text": "    finally:",
+                    "type": "line"
+                },
+                {
+                    "text": "        os.dup2(process_stdin, stdin_fileno)",
+                    "type": "line"
+                },
+                {
+                    "text": "        os.dup2(process_stdout, stdout_fileno)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def _run(screen, config, controller):",
+                    "type": "line"
+                },
+                {
+                    "text": "    curses.raw()",
+                    "type": "line"
+                },
+                {
+                    "text": "    if curses.has_colors():",
+                    "type": "line"
+                },
+                {
+                    "text": "        curses.use_default_colors()",
+                    "type": "line"
+                },
+                {
+                    "text": "        curses.init_pair(",
+                    "type": "line"
+                },
+                {
+                    "text": "            1,",
+                    "type": "line"
+                },
+                {
+                    "text": "            COLOR_MAP[config.get_highlight_fg()],",
+                    "type": "line"
+                },
+                {
+                    "text": "            COLOR_MAP[config.get_highlight_bg()],",
+                    "type": "line"
+                },
+                {
+                    "text": "        )",
+                    "type": "line"
+                },
+                {
+                    "text": "        curses.init_pair(",
+                    "type": "line"
+                },
+                {
+                    "text": "            2,",
+                    "type": "line"
+                },
+                {
+                    "text": "            COLOR_MAP[config.get_selection_fg()],",
+                    "type": "line"
+                },
+                {
+                    "text": "            COLOR_MAP[config.get_selection_bg()]",
+                    "type": "line"
+                },
+                {
+                    "text": "        )",
+                    "type": "line"
+                },
+                {
+                    "text": "    controller.setup(screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "    return _loop(controller, screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def _loop(controller, screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "    patched_screen = _Screen(screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "    buf = \"\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    while True:",
+                    "type": "line"
+                },
+                {
+                    "text": "        controller.render(patched_screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "        ch = screen.getch()",
+                    "type": "line"
+                },
+                {
+                    "text": "        if ch > 255:",
+                    "type": "line"
+                },
+                {
+                    "text": "            if ch == curses.KEY_BACKSPACE:",
+                    "type": "line"
+                },
+                {
+                    "text": "                buf = BS.encode(locale.getpreferredencoding())",
+                    "type": "line"
+                },
+                {
+                    "text": "            elif ch == curses.KEY_ENTER:",
+                    "type": "line"
+                },
+                {
+                    "text": "                buf = CR.encode(locale.getpreferredencoding())",
+                    "type": "line"
+                },
+                {
+                    "text": "            else:",
+                    "type": "line"
+                },
+                {
+                    "text": "                buf = \"\"",
+                    "type": "line"
+                },
+                {
+                    "text": "                continue",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            buf += chr(ch)",
+                    "type": "line"
+                },
+                {
+                    "text": "        try:",
+                    "type": "line"
+                },
+                {
+                    "text": "            unicode_character = buf.decode(locale.getpreferredencoding())",
+                    "type": "line"
+                },
+                {
+                    "text": "        except UnicodeDecodeError:",
+                    "type": "line"
+                },
+                {
+                    "text": "            # We are dealing with an incomplete multi-byte character.",
+                    "type": "line"
+                },
+                {
+                    "text": "            pass",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            buf = \"\"",
+                    "type": "line"
+                },
+                {
+                    "text": "            result = controller.process_input(unicode_character)",
+                    "type": "line"
+                },
+                {
+                    "text": "            if result:",
+                    "type": "line"
+                },
+                {
+                    "text": "                return result",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "class _Screen(object):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def __init__(self, curses_screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._curses_screen = curses_screen",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def getmaxyx(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._curses_screen.getmaxyx()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def erase(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._curses_screen.erase()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def addstr(self, y, x, text, style):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if style == \"highlight\":",
+                    "type": "line"
+                },
+                {
+                    "text": "            attrs = curses.A_BOLD",
+                    "type": "line"
+                },
+                {
+                    "text": "            if curses.has_colors():",
+                    "type": "line"
+                },
+                {
+                    "text": "                attrs |= curses.color_pair(1)",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif style == \"select\":",
+                    "type": "line"
+                },
+                {
+                    "text": "            attrs = curses.A_BOLD",
+                    "type": "line"
+                },
+                {
+                    "text": "            if curses.has_colors():",
+                    "type": "line"
+                },
+                {
+                    "text": "                attrs |= curses.color_pair(2)",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif style == \"status\":",
+                    "type": "line"
+                },
+                {
+                    "text": "            attrs = curses.A_REVERSE | curses.A_BOLD",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            attrs = 0",
+                    "type": "line"
+                },
+                {
+                    "text": "        try:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._curses_screen.addstr(y, x, self._encode(text), attrs)",
+                    "type": "line"
+                },
+                {
+                    "text": "        except curses.error:",
+                    "type": "line"
+                },
+                {
+                    "text": "            # Writing last position (max_y, max_x) fails, but we can ignore it.",
+                    "type": "line"
+                },
+                {
+                    "text": "            pass",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def refresh(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._curses_screen.refresh()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _encode(self, text):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return text.encode(locale.getpreferredencoding())",
+                    "type": "line"
+                }
+            ],
+            "links": [],
+            "tags": [],
+            "text": "import contextlib\nimport curses\n\nfrom rlselectlib.unicode import BS, CR\n\n\nCOLOR_MAP = {\n    \"BACKGROUND\": -1,\n    \"FOREGROUND\": -1,\n    \"BLACK\": curses.COLOR_BLACK,\n    \"BLUE\": curses.COLOR_BLUE,\n    \"CYAN\": curses.COLOR_CYAN,\n    \"GREEN\": curses.COLOR_GREEN,\n    \"MAGENTA\": curses.COLOR_MAGENTA,\n    \"RED\": curses.COLOR_RED,\n    \"WHITE\": curses.COLOR_WHITE,\n    \"YELLOW\": curses.COLOR_YELLOW,\n}\n\n\ndef curses_ui_run(config, controller):\n    with _redirect_terminal():\n        return curses.wrapper(_run, config, controller)\n\n\n@contextlib.contextmanager\ndef _redirect_terminal():\n    stdin_fileno = sys.stdin.fileno()\n    stdout_fileno = sys.stdout.fileno()\n    process_stdin = os.dup(sys.stdin.fileno())\n    process_stdout = os.dup(sys.stdout.fileno())\n    try:\n        terminal_stdin = open(\"/dev/tty\", \"rb\")\n        terminal_stdout = open(\"/dev/tty\", \"wb\")\n        os.dup2(terminal_stdin.fileno(), stdin_fileno)\n        os.dup2(terminal_stdout.fileno(), stdout_fileno)\n        yield\n    finally:\n        os.dup2(process_stdin, stdin_fileno)\n        os.dup2(process_stdout, stdout_fileno)\n\n\ndef _run(screen, config, controller):\n    curses.raw()\n    if curses.has_colors():\n        curses.use_default_colors()\n        curses.init_pair(\n            1,\n            COLOR_MAP[config.get_highlight_fg()],\n            COLOR_MAP[config.get_highlight_bg()],\n        )\n        curses.init_pair(\n            2,\n            COLOR_MAP[config.get_selection_fg()],\n            COLOR_MAP[config.get_selection_bg()]\n        )\n    controller.setup(screen)\n    return _loop(controller, screen)\n\n\ndef _loop(controller, screen):\n    patched_screen = _Screen(screen)\n    buf = \"\"\n    while True:\n        controller.render(patched_screen)\n        ch = screen.getch()\n        if ch > 255:\n            if ch == curses.KEY_BACKSPACE:\n                buf = BS.encode(locale.getpreferredencoding())\n            elif ch == curses.KEY_ENTER:\n                buf = CR.encode(locale.getpreferredencoding())\n            else:\n                buf = \"\"\n                continue\n        else:\n            buf += chr(ch)\n        try:\n            unicode_character = buf.decode(locale.getpreferredencoding())\n        except UnicodeDecodeError:\n            # We are dealing with an incomplete multi-byte character.\n            pass\n        else:\n            buf = \"\"\n            result = controller.process_input(unicode_character)\n            if result:\n                return result\n\n\nclass _Screen(object):\n\n    def __init__(self, curses_screen):\n        self._curses_screen = curses_screen\n\n    def getmaxyx(self):\n        return self._curses_screen.getmaxyx()\n\n    def erase(self):\n        return self._curses_screen.erase()\n\n    def addstr(self, y, x, text, style):\n        if style == \"highlight\":\n            attrs = curses.A_BOLD\n            if curses.has_colors():\n                attrs |= curses.color_pair(1)\n        elif style == \"select\":\n            attrs = curses.A_BOLD\n            if curses.has_colors():\n                attrs |= curses.color_pair(2)\n        elif style == \"status\":\n            attrs = curses.A_REVERSE | curses.A_BOLD\n        else:\n            attrs = 0\n        try:\n            self._curses_screen.addstr(y, x, self._encode(text), attrs)\n        except curses.error:\n            # Writing last position (max_y, max_x) fails, but we can ignore it.\n            pass\n\n    def refresh(self):\n        return self._curses_screen.refresh()\n\n    def _encode(self, text):\n        return text.encode(locale.getpreferredencoding())\n",
+            "timestamp_created": "2021-06-19T12:02:59.056365",
+            "type": "code"
+        },
+        "60a53ecd900547f1b12465ccbe961b1b": {
+            "chunkpath": [
+                "wx_ui"
+            ],
+            "filepath": [
+                "rlselect2.py"
+            ],
+            "fragments": [
+                {
+                    "text": "import wx",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def wx_ui_run(config, controller):",
+                    "type": "line"
+                },
+                {
+                    "text": "    app = MyApp()",
+                    "type": "line"
+                },
+                {
+                    "text": "    main_frame = WxCurses(app, config, controller)",
+                    "type": "line"
+                },
+                {
+                    "text": "    main_frame.Show()",
+                    "type": "line"
+                },
+                {
+                    "text": "    app.MainLoop()",
+                    "type": "line"
+                },
+                {
+                    "text": "    return app.get_result()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "class MyApp(wx.App):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def __init__(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        wx.App.__init__(self, False)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self.set_result(None)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def set_result(self, result):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._result = result",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_result(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._result",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "class WxCurses(wx.Frame):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def __init__(self, app, config, controller):",
+                    "type": "line"
+                },
+                {
+                    "text": "        wx.Frame.__init__(self, None, size=config.get_gui_size())",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._screen = WxScreen(self, app, config, controller)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "class WxScreen(wx.Panel):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def __init__(self, parent, app, config, controller):",
+                    "type": "line"
+                },
+                {
+                    "text": "        wx.Panel.__init__(self, parent, style=wx.NO_BORDER | wx.WANTS_CHARS)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._app = app",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config = config",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._controller = controller",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._surface_bitmap = None",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._commands = []",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._init_fonts()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self.Bind(wx.EVT_CHAR, self._on_key_down)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self.Bind(wx.EVT_PAINT, self._on_paint)",
+                    "type": "line"
+                },
+                {
+                    "text": "        wx.CallAfter(self._after_init)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _after_init(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._controller.setup(self)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._controller.render(self)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def getmaxyx(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        ww, wh = self.GetSizeTuple()",
+                    "type": "line"
+                },
+                {
+                    "text": "        max_y = int(wh) / int(self._fh)",
+                    "type": "line"
+                },
+                {
+                    "text": "        max_x = int(ww) / int(self._fw)",
+                    "type": "line"
+                },
+                {
+                    "text": "        return (max_y, max_x)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def erase(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._commands = []",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def addstr(self, y, x, text, style):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._commands.append((y, x, text, style))",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def refresh(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        width, height = self.GetSizeTuple()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._surface_bitmap = wx.EmptyBitmap(width, height)",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc = wx.MemoryDC()",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.SelectObject(self._surface_bitmap)",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.BeginDrawing()",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.SetBackground(wx.Brush(",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._config.get_rgb(\"BACKGROUND\"), wx.SOLID",
+                    "type": "line"
+                },
+                {
+                    "text": "        ))",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.SetBackgroundMode(wx.PENSTYLE_SOLID)",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.Clear()",
+                    "type": "line"
+                },
+                {
+                    "text": "        for (y, x, text, style) in self._commands:",
+                    "type": "line"
+                },
+                {
+                    "text": "            if style == \"highlight\":",
+                    "type": "line"
+                },
+                {
+                    "text": "                memdc.SetFont(self._base_font_bold)",
+                    "type": "line"
+                },
+                {
+                    "text": "                fg = self._config.get_rgb(self._config.get_highlight_fg())",
+                    "type": "line"
+                },
+                {
+                    "text": "                bg = self._config.get_rgb(self._config.get_highlight_bg())",
+                    "type": "line"
+                },
+                {
+                    "text": "            elif style == \"select\":",
+                    "type": "line"
+                },
+                {
+                    "text": "                memdc.SetFont(self._base_font_bold)",
+                    "type": "line"
+                },
+                {
+                    "text": "                fg = self._config.get_rgb(self._config.get_selection_fg())",
+                    "type": "line"
+                },
+                {
+                    "text": "                bg = self._config.get_rgb(self._config.get_selection_bg())",
+                    "type": "line"
+                },
+                {
+                    "text": "            elif style == \"status\":",
+                    "type": "line"
+                },
+                {
+                    "text": "                memdc.SetFont(self._base_font_bold)",
+                    "type": "line"
+                },
+                {
+                    "text": "                fg = self._config.get_rgb(\"BACKGROUND\")",
+                    "type": "line"
+                },
+                {
+                    "text": "                bg = self._config.get_rgb(\"FOREGROUND\")",
+                    "type": "line"
+                },
+                {
+                    "text": "            else:",
+                    "type": "line"
+                },
+                {
+                    "text": "                memdc.SetFont(self._base_font)",
+                    "type": "line"
+                },
+                {
+                    "text": "                fg = self._config.get_rgb(\"FOREGROUND\")",
+                    "type": "line"
+                },
+                {
+                    "text": "                bg = self._config.get_rgb(\"BACKGROUND\")",
+                    "type": "line"
+                },
+                {
+                    "text": "            memdc.SetTextBackground(bg)",
+                    "type": "line"
+                },
+                {
+                    "text": "            memdc.SetTextForeground(fg)",
+                    "type": "line"
+                },
+                {
+                    "text": "            memdc.DrawText(text, x*self._fw, y*self._fh)",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.EndDrawing()",
+                    "type": "line"
+                },
+                {
+                    "text": "        del memdc",
+                    "type": "line"
+                },
+                {
+                    "text": "        self.Refresh()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self.Update()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _init_fonts(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._base_font = wx.Font(",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._config.get_gui_font_size(),",
+                    "type": "line"
+                },
+                {
+                    "text": "            wx.FONTFAMILY_TELETYPE,",
+                    "type": "line"
+                },
+                {
+                    "text": "            wx.FONTSTYLE_NORMAL,",
+                    "type": "line"
+                },
+                {
+                    "text": "            wx.FONTWEIGHT_NORMAL",
+                    "type": "line"
+                },
+                {
+                    "text": "        )",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._base_font_bold = self._base_font.Bold()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._find_text_size()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _find_text_size(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        bitmap = wx.EmptyBitmap(100, 100)",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc = wx.MemoryDC()",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.SetFont(self._base_font)",
+                    "type": "line"
+                },
+                {
+                    "text": "        memdc.SelectObject(bitmap)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._fw, self._fh = memdc.GetTextExtent(\".\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _on_key_down(self, evt):",
+                    "type": "line"
+                },
+                {
+                    "text": "        result = self._controller.process_input(unichr(evt.GetUnicodeKey()))",
+                    "type": "line"
+                },
+                {
+                    "text": "        if result:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._app.set_result(result)",
+                    "type": "line"
+                },
+                {
+                    "text": "            self.GetParent().Close()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._controller.render(self)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _on_paint(self, event):",
+                    "type": "line"
+                },
+                {
+                    "text": "        dc = wx.AutoBufferedPaintDC(self)",
+                    "type": "line"
+                },
+                {
+                    "text": "        dc.BeginDrawing()",
+                    "type": "line"
+                },
+                {
+                    "text": "        if self._surface_bitmap:",
+                    "type": "line"
+                },
+                {
+                    "text": "            dc.DrawBitmap(self._surface_bitmap, 0, 0, True)",
+                    "type": "line"
+                },
+                {
+                    "text": "        dc.EndDrawing()",
+                    "type": "line"
+                }
+            ],
+            "links": [],
+            "tags": [],
+            "text": "Enter note text...\n",
+            "timestamp_created": "2021-06-19T12:01:19.165239",
+            "type": "code"
+        },
+        "64add2c2c062467fbe51fbf81b468ab9": {
+            "chunkpath": [],
+            "filepath": [
+                "test_rlselect2.py"
+            ],
+            "fragments": [
+                {
+                    "text": "# Copyright (C) 2017  Rickard Lindberg",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# This file is part of rlselect.",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# rlselect is free software: you can redistribute it and/or modify",
+                    "type": "line"
+                },
+                {
+                    "text": "# it under the terms of the GNU General Public License as published by",
+                    "type": "line"
+                },
+                {
+                    "text": "# the Free Software Foundation, either version 3 of the License, or",
+                    "type": "line"
+                },
+                {
+                    "text": "# (at your option) any later version.",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# rlselect is distributed in the hope that it will be useful,",
+                    "type": "line"
+                },
+                {
+                    "text": "# but WITHOUT ANY WARRANTY; without even the implied warranty of",
+                    "type": "line"
+                },
+                {
+                    "text": "# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
+                    "type": "line"
+                },
+                {
+                    "text": "# GNU General Public License for more details.",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# You should have received a copy of the GNU General Public License",
+                    "type": "line"
+                },
+                {
+                    "text": "# along with rlselect.  If not, see <http://www.gnu.org/licenses/>.",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "from mock import Mock",
+                    "type": "line"
+                },
+                {
+                    "text": "import pytest",
+                    "type": "line"
+                },
+                {
+                    "text": "import StringIO",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "from rlselect2 import (",
+                    "type": "line"
+                },
+                {
+                    "text": "    Action,",
+                    "type": "line"
+                },
+                {
+                    "text": "    Config,",
+                    "type": "line"
+                },
+                {
+                    "text": "    CR,",
+                    "type": "line"
+                },
+                {
+                    "text": "    CTRL_C,",
+                    "type": "line"
+                },
+                {
+                    "text": "    CTRL_G,",
+                    "type": "line"
+                },
+                {
+                    "text": "    ESC,",
+                    "type": "line"
+                },
+                {
+                    "text": "    LF,",
+                    "type": "line"
+                },
+                {
+                    "text": "    Lines,",
+                    "type": "line"
+                },
+                {
+                    "text": "    search,",
+                    "type": "line"
+                },
+                {
+                    "text": "    TAB,",
+                    "type": "line"
+                },
+                {
+                    "text": "    UiController,",
+                    "type": "line"
+                },
+                {
+                    "text": ")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_defaults():",
+                    "type": "line"
+                },
+                {
+                    "text": "    config = Config()",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_highlight_fg() == \"RED\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_highlight_bg() == \"BACKGROUND\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_selection_fg() == \"WHITE\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_selection_bg() == \"GREEN\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"BACKGROUND\") == (253, 246, 227)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"FOREGROUND\") == (101, 123, 131)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"BLACK\") == (7, 54, 66)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"BLUE\") == (38, 139, 210)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"CYAN\") == (42, 161, 152)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"GREEN\") == (133, 153, 0)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"MAGENTA\") == (211, 54, 130)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"RED\") == (220, 50, 47)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"WHITE\") == (238, 232, 213)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"YELLOW\") == (181, 137, 0)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_gui_font_size() == 11",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_gui_size() == (900, 648)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_custom(tmpdir):",
+                    "type": "line"
+                },
+                {
+                    "text": "    tmpdir.join(\"example.cfg\").write(\"\"\"\\",
+                    "type": "line"
+                },
+                {
+                    "text": "[theme]",
+                    "type": "line"
+                },
+                {
+                    "text": "highlight_fg = MAGENTA",
+                    "type": "line"
+                },
+                {
+                    "text": "highlight_bg = CYAN",
+                    "type": "line"
+                },
+                {
+                    "text": "selection_fg = BLACK",
+                    "type": "line"
+                },
+                {
+                    "text": "selection_bg = BLUE",
+                    "type": "line"
+                },
+                {
+                    "text": "gui_font_size = 20",
+                    "type": "line"
+                },
+                {
+                    "text": "gui_size = 1000, 1000",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "[rgb]",
+                    "type": "line"
+                },
+                {
+                    "text": "BACKGROUND = 1, 1, 1",
+                    "type": "line"
+                },
+                {
+                    "text": "FOREGROUND = 2, 2, 2",
+                    "type": "line"
+                },
+                {
+                    "text": "BLACK = 3, 3, 3",
+                    "type": "line"
+                },
+                {
+                    "text": "BLUE = 4, 4, 4",
+                    "type": "line"
+                },
+                {
+                    "text": "CYAN = 5, 5, 5",
+                    "type": "line"
+                },
+                {
+                    "text": "GREEN = 6, 6, 6",
+                    "type": "line"
+                },
+                {
+                    "text": "MAGENTA = 7, 7, 7",
+                    "type": "line"
+                },
+                {
+                    "text": "RED = 8, 8, 8",
+                    "type": "line"
+                },
+                {
+                    "text": "WHITE = 9, 9, 9",
+                    "type": "line"
+                },
+                {
+                    "text": "YELLOW = 10, 10, 10",
+                    "type": "line"
+                },
+                {
+                    "text": "\"\"\")",
+                    "type": "line"
+                },
+                {
+                    "text": "    config = Config(str(tmpdir.join(\"example.cfg\")))",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_highlight_fg() == \"MAGENTA\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_highlight_bg() == \"CYAN\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_selection_fg() == \"BLACK\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_selection_bg() == \"BLUE\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"BACKGROUND\") == (1, 1, 1)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"FOREGROUND\") == (2, 2, 2)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"BLACK\") == (3, 3, 3)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"BLUE\") == (4, 4, 4)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"CYAN\") == (5, 5, 5)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"GREEN\") == (6, 6, 6)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"MAGENTA\") == (7, 7, 7)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"RED\") == (8, 8, 8)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"WHITE\") == (9, 9, 9)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_rgb(\"YELLOW\") == (10, 10, 10)",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_gui_font_size() == 20",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert config.get_gui_size() == (1000, 1000)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_filter():",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines([",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"one\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"two\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"three\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ])",
+                    "type": "line"
+                },
+                {
+                    "text": "    term = \"t\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert list(search(lines, term)) == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        (1, [(0, 1)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "        (2, [(0, 1)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_re():",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines([",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"one\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"some].*chars\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"three\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ])",
+                    "type": "line"
+                },
+                {
+                    "text": "    term = \"].*\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert list(search(lines, term)) == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        (1, [(4, 7)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_ignores_case():",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines([",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"hone\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"tHree\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ])",
+                    "type": "line"
+                },
+                {
+                    "text": "    term = \"h\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert list(search(lines, term)) == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        (0, [(0, 1)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "        (1, [(1, 2)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_uses_case():",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines([",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"hone\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"tHree\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ])",
+                    "type": "line"
+                },
+                {
+                    "text": "    term = \"H\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert list(search(lines, term)) == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        (1, [(1, 2)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_multiple_terms():",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines([",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"one of them\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"two\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ])",
+                    "type": "line"
+                },
+                {
+                    "text": "    term = \"ne th\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert list(search(lines, term)) == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        (0, [(1, 3), (7, 9)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_repeat():",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines([",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"aaa\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ])",
+                    "type": "line"
+                },
+                {
+                    "text": "    term = \"aa\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert list(search(lines, term)) == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        (0, [(0, 2)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_incorrect_mark_bug():",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines([",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"/tests/test\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ])",
+                    "type": "line"
+                },
+                {
+                    "text": "    term = \"/test\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert list(search(lines, term)) == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        (0, [(0, 5), (6, 11)]),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "@pytest.mark.parametrize(\"kwargs,input_,expected_output\", [",
+                    "type": "line"
+                },
+                {
+                    "text": "    ({},                   CR,     (Action(False, \"enter\"), \"\")),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ({},                   LF,     (Action(False, \"enter\"), \"\")),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ({\"tab_exits\": True},  TAB,    (Action(False, \"tab\"), \"\")),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ({\"tab_exits\": False}, TAB,    None),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ({},                   ESC,    (Action(True, \"esc\"), \"\")),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ({},                   CTRL_C, (Action(True, \"ctrl-c\"), \"\")),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ({},                   CTRL_G, (Action(True, \"ctrl-g\"), \"\")),",
+                    "type": "line"
+                },
+                {
+                    "text": "], ids=lambda x: \"{!r}\".format(x))",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_return_values(kwargs, input_, expected_output):",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert create_controller(**kwargs).process_input(input_) == expected_output",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def create_controller(tab_exits=False):",
+                    "type": "line"
+                },
+                {
+                    "text": "    screen = Mock()",
+                    "type": "line"
+                },
+                {
+                    "text": "    screen.getmaxyx.return_value = (100,  100)",
+                    "type": "line"
+                },
+                {
+                    "text": "    controller = UiController(",
+                    "type": "line"
+                },
+                {
+                    "text": "        Lines([]),",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        lambda x, y: [],",
+                    "type": "line"
+                },
+                {
+                    "text": "        tab_exits",
+                    "type": "line"
+                },
+                {
+                    "text": "    )",
+                    "type": "line"
+                },
+                {
+                    "text": "    controller.setup(screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "    return controller",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_splits_stream_into_lines():",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert get_lines(\"one\\ntwo\\r\\nthree\\rfour\\n\", \"ascii\") == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        u\"one\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        u\"two\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        u\"three\",",
+                    "type": "line"
+                },
+                {
+                    "text": "        u\"four\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_skips_duplicate_lines():",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert get_lines(\"dup\\ndup\", \"ascii\") == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        u\"dup\",",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def test_converts_unknown_bytes_to_special_character():",
+                    "type": "line"
+                },
+                {
+                    "text": "    UNICODCE_UNKNOWN_CHAR = u\"\\uFFFD\"",
+                    "type": "line"
+                },
+                {
+                    "text": "    assert get_lines(\"a\\xFFb\", \"ascii\") == [",
+                    "type": "line"
+                },
+                {
+                    "text": "        u\"a{0}b\".format(UNICODCE_UNKNOWN_CHAR),",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def get_lines(binary, encoding):",
+                    "type": "line"
+                },
+                {
+                    "text": "    lines = Lines.from_stream(StringIO.StringIO(binary), encoding)",
+                    "type": "line"
+                },
+                {
+                    "text": "    return [",
+                    "type": "line"
+                },
+                {
+                    "text": "        lines.get(index)",
+                    "type": "line"
+                },
+                {
+                    "text": "        for index",
+                    "type": "line"
+                },
+                {
+                    "text": "        in range(lines.count())",
+                    "type": "line"
+                },
+                {
+                    "text": "    ]",
+                    "type": "line"
+                }
+            ],
+            "links": [],
+            "tags": [],
+            "text": "# Copyright (C) 2017  Rickard Lindberg\n#\n# This file is part of rlselect.\n#\n# rlselect is free software: you can redistribute it and/or modify\n# it under the terms of the GNU General Public License as published by\n# the Free Software Foundation, either version 3 of the License, or\n# (at your option) any later version.\n#\n# rlselect is distributed in the hope that it will be useful,\n# but WITHOUT ANY WARRANTY; without even the implied warranty of\n# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n# GNU General Public License for more details.\n#\n# You should have received a copy of the GNU General Public License\n# along with rlselect.  If not, see <http://www.gnu.org/licenses/>.\n\n\nfrom rlselectlib import Config\n\n\ndef test_defaults():\n    config = Config()\n    assert config.get_highlight_fg() == \"RED\"\n    assert config.get_highlight_bg() == \"BACKGROUND\"\n    assert config.get_selection_fg() == \"WHITE\"\n    assert config.get_selection_bg() == \"GREEN\"\n    assert config.get_rgb(\"BACKGROUND\") == (253, 246, 227)\n    assert config.get_rgb(\"FOREGROUND\") == (101, 123, 131)\n    assert config.get_rgb(\"BLACK\") == (7, 54, 66)\n    assert config.get_rgb(\"BLUE\") == (38, 139, 210)\n    assert config.get_rgb(\"CYAN\") == (42, 161, 152)\n    assert config.get_rgb(\"GREEN\") == (133, 153, 0)\n    assert config.get_rgb(\"MAGENTA\") == (211, 54, 130)\n    assert config.get_rgb(\"RED\") == (220, 50, 47)\n    assert config.get_rgb(\"WHITE\") == (238, 232, 213)\n    assert config.get_rgb(\"YELLOW\") == (181, 137, 0)\n    assert config.get_gui_font_size() == 11\n    assert config.get_gui_size() == (900, 648)\n\n\ndef test_custom(tmpdir):\n    tmpdir.join(\"example.cfg\").write(\"\"\"\\\n[theme]\nhighlight_fg = MAGENTA\nhighlight_bg = CYAN\nselection_fg = BLACK\nselection_bg = BLUE\ngui_font_size = 20\ngui_size = 1000, 1000\n\n[rgb]\nBACKGROUND = 1, 1, 1\nFOREGROUND = 2, 2, 2\nBLACK = 3, 3, 3\nBLUE = 4, 4, 4\nCYAN = 5, 5, 5\nGREEN = 6, 6, 6\nMAGENTA = 7, 7, 7\nRED = 8, 8, 8\nWHITE = 9, 9, 9\nYELLOW = 10, 10, 10\n\"\"\")\n    config = Config(str(tmpdir.join(\"example.cfg\")))\n    assert config.get_highlight_fg() == \"MAGENTA\"\n    assert config.get_highlight_bg() == \"CYAN\"\n    assert config.get_selection_fg() == \"BLACK\"\n    assert config.get_selection_bg() == \"BLUE\"\n    assert config.get_rgb(\"BACKGROUND\") == (1, 1, 1)\n    assert config.get_rgb(\"FOREGROUND\") == (2, 2, 2)\n    assert config.get_rgb(\"BLACK\") == (3, 3, 3)\n    assert config.get_rgb(\"BLUE\") == (4, 4, 4)\n    assert config.get_rgb(\"CYAN\") == (5, 5, 5)\n    assert config.get_rgb(\"GREEN\") == (6, 6, 6)\n    assert config.get_rgb(\"MAGENTA\") == (7, 7, 7)\n    assert config.get_rgb(\"RED\") == (8, 8, 8)\n    assert config.get_rgb(\"WHITE\") == (9, 9, 9)\n    assert config.get_rgb(\"YELLOW\") == (10, 10, 10)\n    assert config.get_gui_font_size() == 20\n    assert config.get_gui_size() == (1000, 1000)\n",
+            "timestamp_created": "2021-06-19T12:13:14.932109",
+            "type": "code"
+        },
+        "6f7ec20770ba4748a2726f9813be3535": {
+            "chunkpath": [],
+            "filepath": [
+                "rlselect2.py"
+            ],
+            "fragments": [
+                {
+                    "text": "#!/usr/bin/env python",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# Copyright (C) 2017  Rickard Lindberg",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# This file is part of rlselect.",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# rlselect is free software: you can redistribute it and/or modify",
+                    "type": "line"
+                },
+                {
+                    "text": "# it under the terms of the GNU General Public License as published by",
+                    "type": "line"
+                },
+                {
+                    "text": "# the Free Software Foundation, either version 3 of the License, or",
+                    "type": "line"
+                },
+                {
+                    "text": "# (at your option) any later version.",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# rlselect is distributed in the hope that it will be useful,",
+                    "type": "line"
+                },
+                {
+                    "text": "# but WITHOUT ANY WARRANTY; without even the implied warranty of",
+                    "type": "line"
+                },
+                {
+                    "text": "# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
+                    "type": "line"
+                },
+                {
+                    "text": "# GNU General Public License for more details.",
+                    "type": "line"
+                },
+                {
+                    "text": "#",
+                    "type": "line"
+                },
+                {
+                    "text": "# You should have received a copy of the GNU General Public License",
+                    "type": "line"
+                },
+                {
+                    "text": "# along with rlselect.  If not, see <http://www.gnu.org/licenses/>.",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "from collections import namedtuple",
+                    "type": "line"
+                },
+                {
+                    "text": "from ConfigParser import RawConfigParser",
+                    "type": "line"
+                },
+                {
+                    "text": "from itertools import islice",
+                    "type": "line"
+                },
+                {
+                    "text": "import locale",
+                    "type": "line"
+                },
+                {
+                    "text": "import os",
+                    "type": "line"
+                },
+                {
+                    "text": "import sys",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "class Config(object):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def __init__(self, path=None):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser = RawConfigParser()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.add_section(\"theme\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"theme\", \"highlight_fg\", \"RED\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"theme\", \"highlight_bg\", \"BACKGROUND\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"theme\", \"selection_fg\", \"WHITE\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"theme\", \"selection_bg\", \"GREEN\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"theme\", \"gui_font_size\", \"11\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"theme\", \"gui_size\", \"900, 648\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.add_section(\"rgb\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"BACKGROUND\", \"253, 246, 227\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"FOREGROUND\", \"101, 123, 131\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"BLACK\", \"7, 54, 66\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"BLUE\", \"38, 139, 210\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"CYAN\", \"42, 161, 152\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"GREEN\", \"133, 153, 0\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"MAGENTA\", \"211, 54, 130\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"RED\", \"220, 50, 47\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"WHITE\", \"238, 232, 213\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._config_parser.set(\"rgb\", \"YELLOW\", \"181, 137, 0\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        if path is not None:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._config_parser.read([path])",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_highlight_fg(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._config_parser.get(\"theme\", \"highlight_fg\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_highlight_bg(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._config_parser.get(\"theme\", \"highlight_bg\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_selection_fg(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._config_parser.get(\"theme\", \"selection_fg\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_selection_bg(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._config_parser.get(\"theme\", \"selection_bg\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_rgb(self, name):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._get_int_tuple(\"rgb\", name, 3)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_gui_font_size(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._config_parser.getint(\"theme\", \"gui_font_size\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get_gui_size(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._get_int_tuple(\"theme\", \"gui_size\", 2)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _get_int_tuple(self, section, name, size):",
+                    "type": "line"
+                },
+                {
+                    "text": "        result = tuple(",
+                    "type": "line"
+                },
+                {
+                    "text": "            int(x.strip())",
+                    "type": "line"
+                },
+                {
+                    "text": "            for x",
+                    "type": "line"
+                },
+                {
+                    "text": "            in self._config_parser.get(section, name).split(\",\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        )",
+                    "type": "line"
+                },
+                {
+                    "text": "        if len(result) != size:",
+                    "type": "line"
+                },
+                {
+                    "text": "            raise ValueError(\"Expected {} integers but got {} for {}\".format(",
+                    "type": "line"
+                },
+                {
+                    "text": "                size,",
+                    "type": "line"
+                },
+                {
+                    "text": "                len(result),",
+                    "type": "line"
+                },
+                {
+                    "text": "                name",
+                    "type": "line"
+                },
+                {
+                    "text": "            ))",
+                    "type": "line"
+                },
+                {
+                    "text": "        return result",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def search(lines, expression):",
+                    "type": "line"
+                },
+                {
+                    "text": "    match = get_match_fn(expression)",
+                    "type": "line"
+                },
+                {
+                    "text": "    for index, line in lines.iter():",
+                    "type": "line"
+                },
+                {
+                    "text": "        result = match(line)",
+                    "type": "line"
+                },
+                {
+                    "text": "        if result is not None:",
+                    "type": "line"
+                },
+                {
+                    "text": "            yield (index, marks_to_ranges(result))",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def get_match_fn(expression):",
+                    "type": "line"
+                },
+                {
+                    "text": "    def match(line):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if ignore_case:",
+                    "type": "line"
+                },
+                {
+                    "text": "            line = line.lower()",
+                    "type": "line"
+                },
+                {
+                    "text": "        marks = set()",
+                    "type": "line"
+                },
+                {
+                    "text": "        for term, term_len in terms:",
+                    "type": "line"
+                },
+                {
+                    "text": "            if term in line:",
+                    "type": "line"
+                },
+                {
+                    "text": "                index = line.find(term)",
+                    "type": "line"
+                },
+                {
+                    "text": "                while index != -1:",
+                    "type": "line"
+                },
+                {
+                    "text": "                    marks.update(range(index, index+term_len))",
+                    "type": "line"
+                },
+                {
+                    "text": "                    index = line.find(term, index+term_len)",
+                    "type": "line"
+                },
+                {
+                    "text": "            else:",
+                    "type": "line"
+                },
+                {
+                    "text": "                # If one term doesn't match, the expression doesn't match.",
+                    "type": "line"
+                },
+                {
+                    "text": "                return None",
+                    "type": "line"
+                },
+                {
+                    "text": "        return marks",
+                    "type": "line"
+                },
+                {
+                    "text": "    ignore_case = expression == expression.lower()",
+                    "type": "line"
+                },
+                {
+                    "text": "    terms = [(term, len(term)) for term in expression.split()]",
+                    "type": "line"
+                },
+                {
+                    "text": "    return match",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def marks_to_ranges(marks):",
+                    "type": "line"
+                },
+                {
+                    "text": "    result = []",
+                    "type": "line"
+                },
+                {
+                    "text": "    start = None",
+                    "type": "line"
+                },
+                {
+                    "text": "    end = None",
+                    "type": "line"
+                },
+                {
+                    "text": "    for mark in sorted(marks):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if start is None:",
+                    "type": "line"
+                },
+                {
+                    "text": "            start = mark",
+                    "type": "line"
+                },
+                {
+                    "text": "            end = start + 1",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif mark > end:",
+                    "type": "line"
+                },
+                {
+                    "text": "            result.append((start, end))",
+                    "type": "line"
+                },
+                {
+                    "text": "            start = mark",
+                    "type": "line"
+                },
+                {
+                    "text": "            end = start + 1",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            end = mark + 1",
+                    "type": "line"
+                },
+                {
+                    "text": "    if start is not None:",
+                    "type": "line"
+                },
+                {
+                    "text": "        result.append((start, end))",
+                    "type": "line"
+                },
+                {
+                    "text": "    return result",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL_W = u\"\\u0017\"",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL_N = u\"\\u000E\"",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL_P = u\"\\u0010\"",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL_C = u\"\\u0003\"",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL_G = u\"\\u0007\"",
+                    "type": "line"
+                },
+                {
+                    "text": "ESC = u\"\\u001B\"",
+                    "type": "line"
+                },
+                {
+                    "text": "BS = u\"\\u0008\"",
+                    "type": "line"
+                },
+                {
+                    "text": "CR = u\"\\u000D\"",
+                    "type": "line"
+                },
+                {
+                    "text": "LF = u\"\\u000A\"",
+                    "type": "line"
+                },
+                {
+                    "text": "TAB = u\"\\u0009\"",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def is_printable(unicode_character):",
+                    "type": "line"
+                },
+                {
+                    "text": "    return ord(unicode_character) >= 32",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "Action = namedtuple(\"Action\", [\"abort\", \"name\"])",
+                    "type": "line"
+                },
+                {
+                    "text": "ACTION_ENTER = Action(False, \"enter\")",
+                    "type": "line"
+                },
+                {
+                    "text": "ACTION_TAB = Action(False, \"tab\")",
+                    "type": "line"
+                },
+                {
+                    "text": "ACTION_ESC = Action(True, \"esc\")",
+                    "type": "line"
+                },
+                {
+                    "text": "ACTION_CTRL_C = Action(True, \"ctrl-c\")",
+                    "type": "line"
+                },
+                {
+                    "text": "ACTION_CTRL_G = Action(True, \"ctrl-g\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "class UiController(object):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    MATCHES_START_LINE = 2",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def __init__(self, lines, term, search_fn, tab_exits):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._lines = lines",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._term = term",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._search_fn = search_fn",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._action_map = {",
+                    "type": "line"
+                },
+                {
+                    "text": "            CR: ACTION_ENTER,",
+                    "type": "line"
+                },
+                {
+                    "text": "            LF: ACTION_ENTER,",
+                    "type": "line"
+                },
+                {
+                    "text": "            ESC: ACTION_ESC,",
+                    "type": "line"
+                },
+                {
+                    "text": "            CTRL_C: ACTION_CTRL_C,",
+                    "type": "line"
+                },
+                {
+                    "text": "            CTRL_G: ACTION_CTRL_G,",
+                    "type": "line"
+                },
+                {
+                    "text": "        }",
+                    "type": "line"
+                },
+                {
+                    "text": "        if tab_exits:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._action_map[TAB] = ACTION_TAB",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def setup(self, screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._read_size(screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._set_term(self._term)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def render(self, screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "        screen.erase()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._render_matches(screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._render_header(screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._render_term(screen)",
+                    "type": "line"
+                },
+                {
+                    "text": "        screen.refresh()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def process_input(self, unicode_character):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if unicode_character == BS:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._set_term(self._term[:-1])",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif unicode_character == CTRL_W:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._set_term(strip_last_word(self._term))",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif unicode_character == CTRL_N:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._set_match_highlight(self._match_highlight + 1)",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif unicode_character == CTRL_P:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._set_match_highlight(self._match_highlight - 1)",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif unicode_character in self._action_map:",
+                    "type": "line"
+                },
+                {
+                    "text": "            return (",
+                    "type": "line"
+                },
+                {
+                    "text": "                self._action_map[unicode_character],",
+                    "type": "line"
+                },
+                {
+                    "text": "                self._get_selected_item()",
+                    "type": "line"
+                },
+                {
+                    "text": "            )",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif is_printable(unicode_character):",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._set_term(self._term + unicode_character)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _read_size(self, screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "        y, x = screen.getmaxyx()",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._height = y",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._width = x",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _render_matches(self, screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "        y = self.MATCHES_START_LINE",
+                    "type": "line"
+                },
+                {
+                    "text": "        for (match_index, (line_index, items)) in enumerate(self._matches):",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._render_match(",
+                    "type": "line"
+                },
+                {
+                    "text": "                screen, y, match_index, self._lines.get(line_index), items",
+                    "type": "line"
+                },
+                {
+                    "text": "            )",
+                    "type": "line"
+                },
+                {
+                    "text": "            y += 1",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _render_match(self, screen, y, match_index, line, items):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if match_index == self._match_highlight:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._text(screen, y, 0, self._get_line_text(line), \"select\")",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            last = 0",
+                    "type": "line"
+                },
+                {
+                    "text": "            x = 0",
+                    "type": "line"
+                },
+                {
+                    "text": "            for start, end in items:",
+                    "type": "line"
+                },
+                {
+                    "text": "                x += self._text(screen, y, x, line[last:start], \"default\")",
+                    "type": "line"
+                },
+                {
+                    "text": "                x += self._text(screen, y, x, line[start:end], \"highlight\")",
+                    "type": "line"
+                },
+                {
+                    "text": "                last = end",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._text(screen, y, x, line[last:], \"default\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _get_line_text(self, line):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return line.ljust(self._width)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _render_header(self, screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._text(screen, 1, 0, self._get_status_text(), \"status\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _get_status_text(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return u\"selecting among {:,} lines \".format(",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._lines.count()",
+                    "type": "line"
+                },
+                {
+                    "text": "        ).rjust(self._width)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _render_term(self, screen):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._text(screen, 0, 0, self._get_term_text(), \"default\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _get_term_text(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return u\"> {}\".format(self._term)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _text(self, screen, y, x, text, style):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if x >= self._width:",
+                    "type": "line"
+                },
+                {
+                    "text": "            return 0",
+                    "type": "line"
+                },
+                {
+                    "text": "        text = expand_variable_width(text)",
+                    "type": "line"
+                },
+                {
+                    "text": "        if x + len(text) >= self._width:",
+                    "type": "line"
+                },
+                {
+                    "text": "            text = text[:self._width-x]",
+                    "type": "line"
+                },
+                {
+                    "text": "        screen.addstr(y, x, text, style)",
+                    "type": "line"
+                },
+                {
+                    "text": "        return len(text)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _set_term(self, new_term):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._term = new_term",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._search()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _search(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._matches = list(islice(",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._search_fn(self._lines, self._term),",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._max_matches()",
+                    "type": "line"
+                },
+                {
+                    "text": "        ))",
+                    "type": "line"
+                },
+                {
+                    "text": "        if len(self._matches) > 0:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._match_highlight = 0",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._match_highlight = -1",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _max_matches(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return max(0, self._height - self.MATCHES_START_LINE)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _set_match_highlight(self, new_value):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if len(self._matches) == 0:",
+                    "type": "line"
+                },
+                {
+                    "text": "            return",
+                    "type": "line"
+                },
+                {
+                    "text": "        if new_value >= len(self._matches):",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._match_highlight = 0",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif new_value < 0:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._match_highlight = len(self._matches) - 1",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            self._match_highlight = new_value",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def _get_selected_item(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        if self._match_highlight != -1:",
+                    "type": "line"
+                },
+                {
+                    "text": "            return self._lines.get(self._matches[self._match_highlight][0])",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif len(self._matches) > 0:",
+                    "type": "line"
+                },
+                {
+                    "text": "            return self._lines.get(self._matches[0][0])",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            return self._term",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def expand_variable_width(text):",
+                    "type": "line"
+                },
+                {
+                    "text": "    return text.replace(\"\\t\", \"    \")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def strip_last_word(text):",
+                    "type": "line"
+                },
+                {
+                    "text": "    remaining_parts = text.rstrip().split(\" \")[:-1]",
+                    "type": "line"
+                },
+                {
+                    "text": "    if remaining_parts:",
+                    "type": "line"
+                },
+                {
+                    "text": "        return \" \".join(remaining_parts) + \" \"",
+                    "type": "line"
+                },
+                {
+                    "text": "    else:",
+                    "type": "line"
+                },
+                {
+                    "text": "        return \"\"",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "class Lines(object):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    @staticmethod",
+                    "type": "line"
+                },
+                {
+                    "text": "    def from_stream(stream, encoding):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return Lines(stream.read().decode(encoding, \"replace\").splitlines())",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def __init__(self, lines):",
+                    "type": "line"
+                },
+                {
+                    "text": "        self._lines = unique(lines)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def iter(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return enumerate(self._lines)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def count(self):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return len(self._lines)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    def get(self, index):",
+                    "type": "line"
+                },
+                {
+                    "text": "        return self._lines[index]",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def unique(items):",
+                    "type": "line"
+                },
+                {
+                    "text": "    result = []",
+                    "type": "line"
+                },
+                {
+                    "text": "    seen = {}",
+                    "type": "line"
+                },
+                {
+                    "text": "    for item in items:",
+                    "type": "line"
+                },
+                {
+                    "text": "        if item not in seen:",
+                    "type": "line"
+                },
+                {
+                    "text": "            seen[item] = True",
+                    "type": "line"
+                },
+                {
+                    "text": "            result.append(item)",
+                    "type": "line"
+                },
+                {
+                    "text": "    return result",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "USAGE = \"\"\"\\",
+                    "type": "line"
+                },
+                {
+                    "text": "I select stuff.",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "Usage:",
+                    "type": "line"
+                },
+                {
+                    "text": "  {name} [--tab] [--action] [--gui] [--] [<initial-search-term>...]",
+                    "type": "line"
+                },
+                {
+                    "text": "  {name} (-h | --help)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "Options:",
+                    "type": "line"
+                },
+                {
+                    "text": "  --tab         Allow <Tab> to select an item.",
+                    "type": "line"
+                },
+                {
+                    "text": "  --action      Print the action taken on the first line.",
+                    "type": "line"
+                },
+                {
+                    "text": "  --gui         Use GUI version instead of console version.",
+                    "type": "line"
+                },
+                {
+                    "text": "  -h,  --help   Show this message and exit.",
+                    "type": "line"
+                },
+                {
+                    "text": "\"\"\".format(",
+                    "type": "line"
+                },
+                {
+                    "text": "    name=os.path.basename(__file__)",
+                    "type": "line"
+                },
+                {
+                    "text": ")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def main():",
+                    "type": "line"
+                },
+                {
+                    "text": "    args = parse_args()",
+                    "type": "line"
+                },
+                {
+                    "text": "    if args[\"-h\"] or args[\"--help\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "        usage()",
+                    "type": "line"
+                },
+                {
+                    "text": "        success()",
+                    "type": "line"
+                },
+                {
+                    "text": "    locale.setlocale(locale.LC_ALL, \"\")",
+                    "type": "line"
+                },
+                {
+                    "text": "    system_encoding = locale.getpreferredencoding()",
+                    "type": "line"
+                },
+                {
+                    "text": "    input_encoding = system_encoding",
+                    "type": "line"
+                },
+                {
+                    "text": "    output_encoding = system_encoding",
+                    "type": "line"
+                },
+                {
+                    "text": "    (action, result) = get_ui_fn(args)(",
+                    "type": "line"
+                },
+                {
+                    "text": "        Config(os.path.expanduser(\"~/.rlselect.cfg\")),",
+                    "type": "line"
+                },
+                {
+                    "text": "        UiController(",
+                    "type": "line"
+                },
+                {
+                    "text": "            lines=Lines.from_stream(sys.stdin, input_encoding),",
+                    "type": "line"
+                },
+                {
+                    "text": "            term=(\" \".join(args[\"<initial-search-term>\"])).decode(",
+                    "type": "line"
+                },
+                {
+                    "text": "                system_encoding,",
+                    "type": "line"
+                },
+                {
+                    "text": "                \"replace\"",
+                    "type": "line"
+                },
+                {
+                    "text": "            ),",
+                    "type": "line"
+                },
+                {
+                    "text": "            search_fn=search,",
+                    "type": "line"
+                },
+                {
+                    "text": "            tab_exits=args[\"--tab\"]",
+                    "type": "line"
+                },
+                {
+                    "text": "        )",
+                    "type": "line"
+                },
+                {
+                    "text": "    )",
+                    "type": "line"
+                },
+                {
+                    "text": "    if args[\"--action\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "        print(action.name)",
+                    "type": "line"
+                },
+                {
+                    "text": "    if action.abort:",
+                    "type": "line"
+                },
+                {
+                    "text": "        fail()",
+                    "type": "line"
+                },
+                {
+                    "text": "    else:",
+                    "type": "line"
+                },
+                {
+                    "text": "        print(result.encode(output_encoding))",
+                    "type": "line"
+                },
+                {
+                    "text": "        success()",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def get_ui_fn(args):",
+                    "type": "line"
+                },
+                {
+                    "text": "    if args[\"--gui\"]:",
+                    "type": "line"
+                },
+                {
+                    "blank_lines_before": 0,
+                    "path": [
+                        "wx_ui"
+                    ],
+                    "prefix": "        ",
+                    "type": "chunk"
+                },
+                {
+                    "text": "        return wx_ui_run",
+                    "type": "line"
+                },
+                {
+                    "text": "    else:",
+                    "type": "line"
+                },
+                {
+                    "blank_lines_before": 0,
+                    "path": [
+                        "curses_ui"
+                    ],
+                    "prefix": "        ",
+                    "type": "chunk"
+                },
+                {
+                    "text": "        return curses_ui_run",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def parse_args():",
+                    "type": "line"
+                },
+                {
+                    "text": "    args = {",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"-h\": False,",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"--help\": False,",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"--tab\": False,",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"--action\": False,",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"--gui\": False,",
+                    "type": "line"
+                },
+                {
+                    "text": "        \"<initial-search-term>\": [],",
+                    "type": "line"
+                },
+                {
+                    "text": "    }",
+                    "type": "line"
+                },
+                {
+                    "text": "    rest = sys.argv[1:]",
+                    "type": "line"
+                },
+                {
+                    "text": "    if rest == [\"-h\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "        args[\"-h\"] = True",
+                    "type": "line"
+                },
+                {
+                    "text": "        rest = []",
+                    "type": "line"
+                },
+                {
+                    "text": "    if rest == [\"--help\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "        args[\"--help\"] = True",
+                    "type": "line"
+                },
+                {
+                    "text": "        rest = []",
+                    "type": "line"
+                },
+                {
+                    "text": "    while rest:",
+                    "type": "line"
+                },
+                {
+                    "text": "        if rest[:1] == [\"--tab\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "            args[\"--tab\"] = True",
+                    "type": "line"
+                },
+                {
+                    "text": "            rest = rest[1:]",
+                    "type": "line"
+                },
+                {
+                    "text": "        if rest[:1] == [\"--action\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "            args[\"--action\"] = True",
+                    "type": "line"
+                },
+                {
+                    "text": "            rest = rest[1:]",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif rest[:1] == [\"--gui\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "            args[\"--gui\"] = True",
+                    "type": "line"
+                },
+                {
+                    "text": "            rest = rest[1:]",
+                    "type": "line"
+                },
+                {
+                    "text": "        elif rest[:1] == [\"--\"]:",
+                    "type": "line"
+                },
+                {
+                    "text": "            args[\"<initial-search-term>\"] = rest[1:]",
+                    "type": "line"
+                },
+                {
+                    "text": "            rest = []",
+                    "type": "line"
+                },
+                {
+                    "text": "        else:",
+                    "type": "line"
+                },
+                {
+                    "text": "            args[\"<initial-search-term>\"] = rest",
+                    "type": "line"
+                },
+                {
+                    "text": "            rest = []",
+                    "type": "line"
+                },
+                {
+                    "text": "    return args",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def usage():",
+                    "type": "line"
+                },
+                {
+                    "text": "    print(USAGE.strip())",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def success():",
+                    "type": "line"
+                },
+                {
+                    "text": "    sys.exit(0)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "def fail():",
+                    "type": "line"
+                },
+                {
+                    "text": "    sys.exit(1)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "if __name__ == \"__main__\":",
+                    "type": "line"
+                },
+                {
+                    "text": "    main()",
+                    "type": "line"
+                }
+            ],
+            "links": [],
+            "tags": [],
+            "text": "Enter note text...\n",
+            "timestamp_created": "2021-06-19T11:52:38.879740",
+            "type": "code"
+        },
+        "f83312733dd34f21be7a8a615a0acaaa": {
+            "links": [],
+            "tags": [],
+            "text": "The second version is a rewrite using Smart Notes LP and also ported to Python 3.\n",
+            "timestamp_created": "2021-06-19T11:52:08.954486",
+            "type": "text"
+        }
+    },
+    "version": 1
+}
