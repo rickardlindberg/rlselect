@@ -294,8 +294,8 @@ def strip_last_word(text):
 class Lines(object):
 
     @staticmethod
-    def from_stream(stream, encoding):
-        return Lines(stream.read().decode(encoding, "replace").splitlines())
+    def from_stream(stream):
+        return Lines(stream.read().splitlines())
 
     def __init__(self, lines):
         self._lines = unique(lines)
@@ -341,12 +341,11 @@ def main():
         success()
     locale.setlocale(locale.LC_ALL, "")
     system_encoding = locale.getpreferredencoding()
-    input_encoding = system_encoding
     output_encoding = system_encoding
     (action, result) = get_ui_fn(args)(
         Config(os.path.expanduser("~/.rlselect.cfg")),
         UiController(
-            lines=Lines.from_stream(sys.stdin, input_encoding),
+            lines=Lines.from_stream(sys.stdin),
             term=(" ".join(args["<initial-search-term>"])).decode(
                 system_encoding,
                 "replace"

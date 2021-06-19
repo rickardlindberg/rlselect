@@ -1097,7 +1097,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "from io import BytesIO",
+                    "text": "from io import StringIO",
                     "type": "line"
                 },
                 {
@@ -1797,7 +1797,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "    assert get_lines(b\"one\\ntwo\\r\\nthree\\rfour\\n\", \"ascii\") == [",
+                    "text": "    assert get_lines(\"one\\ntwo\\r\\nthree\\rfour\\n\") == [",
                     "type": "line"
                 },
                 {
@@ -1829,7 +1829,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "    assert get_lines(b\"dup\\ndup\", \"ascii\") == [",
+                    "text": "    assert get_lines(\"dup\\ndup\") == [",
                     "type": "line"
                 },
                 {
@@ -1845,35 +1845,11 @@
                     "type": "line"
                 },
                 {
-                    "text": "def test_converts_unknown_bytes_to_special_character():",
+                    "text": "def get_lines(binary):",
                     "type": "line"
                 },
                 {
-                    "text": "    UNICODCE_UNKNOWN_CHAR = u\"\\uFFFD\"",
-                    "type": "line"
-                },
-                {
-                    "text": "    assert get_lines(b\"a\\xFFb\", \"ascii\") == [",
-                    "type": "line"
-                },
-                {
-                    "text": "        u\"a{0}b\".format(UNICODCE_UNKNOWN_CHAR),",
-                    "type": "line"
-                },
-                {
-                    "text": "    ]",
-                    "type": "line"
-                },
-                {
-                    "text": "",
-                    "type": "line"
-                },
-                {
-                    "text": "def get_lines(binary, encoding):",
-                    "type": "line"
-                },
-                {
-                    "text": "    lines = Lines.from_stream(BytesIO(binary), encoding)",
+                    "text": "    lines = Lines.from_stream(StringIO(binary))",
                     "type": "line"
                 },
                 {
@@ -3094,11 +3070,11 @@
                     "type": "line"
                 },
                 {
-                    "text": "    def from_stream(stream, encoding):",
+                    "text": "    def from_stream(stream):",
                     "type": "line"
                 },
                 {
-                    "text": "        return Lines(stream.read().decode(encoding, \"replace\").splitlines())",
+                    "text": "        return Lines(stream.read().splitlines())",
                     "type": "line"
                 },
                 {
@@ -3282,10 +3258,6 @@
                     "type": "line"
                 },
                 {
-                    "text": "    input_encoding = system_encoding",
-                    "type": "line"
-                },
-                {
                     "text": "    output_encoding = system_encoding",
                     "type": "line"
                 },
@@ -3302,7 +3274,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "            lines=Lines.from_stream(sys.stdin, input_encoding),",
+                    "text": "            lines=Lines.from_stream(sys.stdin),",
                     "type": "line"
                 },
                 {
