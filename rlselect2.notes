@@ -1910,7 +1910,7 @@
             ],
             "fragments": [
                 {
-                    "text": "#!/usr/bin/env python",
+                    "text": "#!/usr/bin/env python3",
                     "type": "line"
                 },
                 {
