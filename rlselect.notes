@@ -136,7 +136,7 @@
             "tags": [
                 "title"
             ],
-            "text": "rlselect2\n",
+            "text": "rlselect\n",
             "timestamp_created": "2021-06-19T11:51:56.011783",
             "type": "text"
         },
@@ -145,7 +145,7 @@
                 "curses_ui"
             ],
             "filepath": [
-                "rlselect2.py"
+                "rlselect.py"
             ],
             "fragments": [
                 {
@@ -3329,7 +3329,7 @@
                 "wx_ui"
             ],
             "filepath": [
-                "rlselect2.py"
+                "rlselect.py"
             ],
             "fragments": [
                 {
@@ -3822,7 +3822,7 @@
         "64add2c2c062467fbe51fbf81b468ab9": {
             "chunkpath": [],
             "filepath": [
-                "test_rlselect2.py"
+                "test_rlselect.py"
             ],
             "fragments": [
                 {
@@ -3910,7 +3910,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "from rlselect2 import (",
+                    "text": "from rlselect import (",
                     "type": "line"
                 },
                 {
@@ -4679,7 +4679,7 @@
         "6f7ec20770ba4748a2726f9813be3535": {
             "chunkpath": [],
             "filepath": [
-                "rlselect2.py"
+                "rlselect.py"
             ],
             "fragments": [
                 {
@@ -6368,7 +6368,7 @@
                     "type": "line"
                 },
                 {
-                    "text": "py.test test_rlselect2.py -v",
+                    "text": "py.test test_rlselect.py -v",
                     "type": "line"
                 },
                 {

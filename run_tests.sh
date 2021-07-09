@@ -2,6 +2,6 @@
 
 set -e
 
-py.test test_rlselect2.py -v
+py.test test_rlselect.py -v
 
 echo PASS

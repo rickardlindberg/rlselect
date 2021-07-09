@@ -19,7 +19,7 @@ from io import StringIO
 from unittest.mock import Mock
 import pytest
 
-from rlselect2 import (
+from rlselect import (
     Action,
     Config,
     CR,
