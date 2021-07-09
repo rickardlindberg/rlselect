@@ -35,6 +35,11 @@
             "timestamp_created": "2021-06-19T12:02:59.056426",
             "to": "42dfdb0812dc4fe09d1fe32f8ccdc22c"
         },
+        "ad9291077ccd4c83a43d082c99b0f6ab": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-07-09T10:38:47.435815",
+            "to": "ef637a55064647c5b43c41a6c46e86be"
+        },
         "efd24c7fd84a4072870a192d8df81e27": {
             "from": "243699f5ca5f4e60862da6fac02f4c5e",
             "timestamp_created": "2021-07-09T10:07:08.712795",
@@ -6384,6 +6389,543 @@
             "tags": [],
             "text": "Enter note text...\n",
             "timestamp_created": "2021-07-09T10:07:08.712738",
+            "type": "code"
+        },
+        "ef637a55064647c5b43c41a6c46e86be": {
+            "chunkpath": [],
+            "filepath": [
+                "README.md"
+            ],
+            "fragments": [
+                {
+                    "text": "# rlselect",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "rlselect allows you to select a line interactively by searching. It works by",
+                    "type": "line"
+                },
+                {
+                    "text": "reading input from stdin and printing the selected line to stdout. You can",
+                    "type": "line"
+                },
+                {
+                    "text": "therefore use it to search anything, and it is up to you what to do with the",
+                    "type": "line"
+                },
+                {
+                    "text": "selected line.",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "![Demo](https://raw.github.com/rickardlindberg/rlselect/master/demo.gif)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "## Install",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    $ ln -s \"$(pwd)/rlselect.py\" ~/bin/rlselect",
+                    "type": "line"
+                },
+                {
+                    "text": "    $ ln -s \"$(pwd)/rlselect_history.sh\" ~/bin/rlselect-history",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "## Shortcuts",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "Shortcut | Meaning",
+                    "type": "line"
+                },
+                {
+                    "text": "---------|------------------------------------------",
+                    "type": "line"
+                },
+                {
+                    "text": "BS       | Erase last typed character.",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL+W   | Erase last typed word.",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL+N   | Move to the next match.",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL+P   | Move to the previous match.",
+                    "type": "line"
+                },
+                {
+                    "text": "ENTER    | Select the current.",
+                    "type": "line"
+                },
+                {
+                    "text": "TAB      | Select the current if `--tab` was given.",
+                    "type": "line"
+                },
+                {
+                    "text": "ESC      | Exit without selecting.",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL+C   | Exit without selecting.",
+                    "type": "line"
+                },
+                {
+                    "text": "CTRL+G   | Exit without selecting.",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "## Default configuration",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "~/.rlselect.cfg",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    [theme]",
+                    "type": "line"
+                },
+                {
+                    "text": "    highlight_fg = RED",
+                    "type": "line"
+                },
+                {
+                    "text": "    highlight_bg = BACKGROUND",
+                    "type": "line"
+                },
+                {
+                    "text": "    selection_fg = WHITE",
+                    "type": "line"
+                },
+                {
+                    "text": "    selection_bg = GREEN",
+                    "type": "line"
+                },
+                {
+                    "text": "    gui_font_size = 11",
+                    "type": "line"
+                },
+                {
+                    "text": "    gui_size = 900, 648",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    [rgb]",
+                    "type": "line"
+                },
+                {
+                    "text": "    BACKGROUND = 253, 246, 227",
+                    "type": "line"
+                },
+                {
+                    "text": "    FOREGROUND = 101, 123, 131",
+                    "type": "line"
+                },
+                {
+                    "text": "    BLACK = 7, 54, 66",
+                    "type": "line"
+                },
+                {
+                    "text": "    BLUE = 38, 139, 210",
+                    "type": "line"
+                },
+                {
+                    "text": "    CYAN = 42, 161, 152",
+                    "type": "line"
+                },
+                {
+                    "text": "    GREEN = 133, 153, 0",
+                    "type": "line"
+                },
+                {
+                    "text": "    MAGENTA = 211, 54, 130",
+                    "type": "line"
+                },
+                {
+                    "text": "    RED = 220, 50, 47",
+                    "type": "line"
+                },
+                {
+                    "text": "    WHITE = 238, 232, 213",
+                    "type": "line"
+                },
+                {
+                    "text": "    YELLOW = 181, 137, 0",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "## Examples",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "Replace `Ctrl-R` in Bash (requires the extra `rlselect-history`):",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    In ~/.bashrc:",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        if [[ $- =~ .*i.* ]]; then bind '\"\\C-r\": \"\\C-a rlselect-history \\C-j\"'; fi",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "Open a file, buffer, or tag from vim/gvim:",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    In ~/.vimrc:",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        function! Rlselect()",
+                    "type": "line"
+                },
+                {
+                    "text": "            if has(\"gui_running\")",
+                    "type": "line"
+                },
+                {
+                    "text": "                let rlselect_command=\"rlselect --gui\"",
+                    "type": "line"
+                },
+                {
+                    "text": "            else",
+                    "type": "line"
+                },
+                {
+                    "text": "                let rlselect_command=\"rlselect\"",
+                    "type": "line"
+                },
+                {
+                    "text": "            endif",
+                    "type": "line"
+                },
+                {
+                    "text": "            let bufnrs = filter(range(1, bufnr(\"$\")), 'buflisted(v:val)')",
+                    "type": "line"
+                },
+                {
+                    "text": "            let buffers = map(bufnrs, 'bufname(v:val)')",
+                    "type": "line"
+                },
+                {
+                    "text": "            let buffersout = join(buffers, \"\\n\") . \"\\n\"",
+                    "type": "line"
+                },
+                {
+                    "text": "            let selection = system(\"vim-find-select | \" . rlselect_command, buffersout)",
+                    "type": "line"
+                },
+                {
+                    "text": "            if ! has(\"gui_running\")",
+                    "type": "line"
+                },
+                {
+                    "text": "                redraw!",
+                    "type": "line"
+                },
+                {
+                    "text": "            endif",
+                    "type": "line"
+                },
+                {
+                    "text": "            if strpart(selection, 0, 1) == \"b\"",
+                    "type": "line"
+                },
+                {
+                    "text": "                exec \":b \" . strpart(selection, 2)",
+                    "type": "line"
+                },
+                {
+                    "text": "            elseif strpart(selection, 0, 1) == \"t\"",
+                    "type": "line"
+                },
+                {
+                    "text": "                exec \":tj \" . strpart(selection, 2)",
+                    "type": "line"
+                },
+                {
+                    "text": "            elseif strlen(selection) > 0",
+                    "type": "line"
+                },
+                {
+                    "text": "                exec \":e \" . substitute(strpart(selection, 2), \" \", \"\\\\\\\\ \", \"g\")",
+                    "type": "line"
+                },
+                {
+                    "text": "            endif",
+                    "type": "line"
+                },
+                {
+                    "text": "        endfunction",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        nmap <C-t> :call Rlselect()<CR>",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    In ~/bin/vim-find-select:",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        #!/usr/bin/env bash",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        while read buffer; do",
+                    "type": "line"
+                },
+                {
+                    "text": "            echo \"b $buffer\"",
+                    "type": "line"
+                },
+                {
+                    "text": "        done",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        find-files | awk '{ print \"  \" $0 }'",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        if [ -f tags ]; then",
+                    "type": "line"
+                },
+                {
+                    "text": "            cat tags | awk '{ print \"t \" $1 }'",
+                    "type": "line"
+                },
+                {
+                    "text": "        fi",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    In ~/bin/find-files",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        #!/usr/bin/env bash",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "        find . \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type d -name .git        -prune -o \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type d -name .hg         -prune -o \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type d -name __pycache__ -prune -o \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type d -name venv        -prune -o \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type d -name .cache      -prune -o \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type f -name '.*swp'     -prune -o \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type f -name '*pyc'      -prune -o \\",
+                    "type": "line"
+                },
+                {
+                    "text": "            -type f -print",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "Open a file in vim:",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "    vim $(find | rlselect)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "## History",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "rlselect is inspired by [hstr](https://github.com/dvorka/hstr) and",
+                    "type": "line"
+                },
+                {
+                    "text": "[selecta](https://github.com/garybernhardt/selecta).",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "I was using hstr as a replacement for `Ctrl-R` in Bash. I found it excellent",
+                    "type": "line"
+                },
+                {
+                    "text": "and wanted to use the same interface to select other things. For example to",
+                    "type": "line"
+                },
+                {
+                    "text": "switch buffers in Vim. But hstr only allowed selecting Bash history. Then I",
+                    "type": "line"
+                },
+                {
+                    "text": "found selecta. It could do almost what I wanted, but one thing it lacked",
+                    "type": "line"
+                },
+                {
+                    "text": "was a GUI mode. I often use GVim, and then a proper console is not",
+                    "type": "line"
+                },
+                {
+                    "text": "available.",
+                    "type": "line"
+                }
+            ],
+            "links": [],
+            "tags": [],
+            "text": "Enter note text...\n",
+            "timestamp_created": "2021-07-09T10:38:47.435781",
             "type": "code"
         },
         "f83312733dd34f21be7a8a615a0acaaa": {
