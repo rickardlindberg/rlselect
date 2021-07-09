@@ -10,6 +10,11 @@
             "timestamp_created": "2021-07-09T10:04:48.871682",
             "to": "442bbab5f6e74d77b7f52e762d0b8176"
         },
+        "3d7a8e4189b34a1d8287040b7f8a8765": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-07-09T10:24:25.304718",
+            "to": "1eab3cb2bcc94242884b5872b669f13b"
+        },
         "5ae9c96d9ba4404e8df4ed93c23a311a": {
             "from": "243699f5ca5f4e60862da6fac02f4c5e",
             "timestamp_created": "2021-06-19T12:13:14.932160",
@@ -37,6 +42,95 @@
         }
     },
     "notes": {
+        "1eab3cb2bcc94242884b5872b669f13b": {
+            "chunkpath": [],
+            "filepath": [
+                "rlselect_history.sh"
+            ],
+            "fragments": [
+                {
+                    "text": "#!/usr/bin/env bash",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "set -e",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "result=$(tac ~/.bash_history | rlselect --tab --action -- \"$@\")",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "python - \"$result\" << EOF",
+                    "type": "line"
+                },
+                {
+                    "text": "import fcntl",
+                    "type": "line"
+                },
+                {
+                    "text": "import sys",
+                    "type": "line"
+                },
+                {
+                    "text": "import termios",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "action, selection = sys.argv[1].split(\"\\n\", 1)",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "if action != \"tab\":",
+                    "type": "line"
+                },
+                {
+                    "text": "    selection += \"\\n\"",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "for ch in selection:",
+                    "type": "line"
+                },
+                {
+                    "text": "    fcntl.ioctl(sys.stdout.fileno(), termios.TIOCSTI, ch)",
+                    "type": "line"
+                },
+                {
+                    "text": "EOF",
+                    "type": "line"
+                }
+            ],
+            "links": [],
+            "tags": [],
+            "text": "Enter note text...\n",
+            "timestamp_created": "2021-07-09T10:24:25.304677",
+            "type": "code"
+        },
         "243699f5ca5f4e60862da6fac02f4c5e": {
             "links": [],
             "tags": [
