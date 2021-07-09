@@ -7,6 +7,11 @@ selected line.
 
 ![Demo](https://raw.github.com/rickardlindberg/rlselect/master/demo.gif)
 
+## Install
+
+    $ ln -s "$(pwd)/rlselect.py" ~/bin/rlselect
+    $ ln -s "$(pwd)/rlselect_history.sh" ~/bin/rlselect-history
+
 ## Shortcuts
 
 Shortcut | Meaning
