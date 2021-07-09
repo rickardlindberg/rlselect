@@ -29,6 +29,11 @@
             "from": "243699f5ca5f4e60862da6fac02f4c5e",
             "timestamp_created": "2021-06-19T12:02:59.056426",
             "to": "42dfdb0812dc4fe09d1fe32f8ccdc22c"
+        },
+        "efd24c7fd84a4072870a192d8df81e27": {
+            "from": "243699f5ca5f4e60862da6fac02f4c5e",
+            "timestamp_created": "2021-07-09T10:07:08.712795",
+            "to": "7ec8a0eba8324bc0863e5b146c8ad60c"
         }
     },
     "notes": {
@@ -6244,6 +6249,47 @@
             "tags": [],
             "text": "Enter note text...\n",
             "timestamp_created": "2021-06-19T11:52:38.879740",
+            "type": "code"
+        },
+        "7ec8a0eba8324bc0863e5b146c8ad60c": {
+            "chunkpath": [],
+            "filepath": [
+                "run_tests.sh"
+            ],
+            "fragments": [
+                {
+                    "text": "#!/bin/sh",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "set -e",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "py.test test_rlselect2.py -v",
+                    "type": "line"
+                },
+                {
+                    "text": "",
+                    "type": "line"
+                },
+                {
+                    "text": "echo PASS",
+                    "type": "line"
+                }
+            ],
+            "links": [],
+            "tags": [],
+            "text": "Enter note text...\n",
+            "timestamp_created": "2021-07-09T10:07:08.712738",
             "type": "code"
         },
         "f83312733dd34f21be7a8a615a0acaaa": {
