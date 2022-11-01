@@ -227,7 +227,8 @@ class UiController(object):
         self._text(screen, 1, 0, self._get_status_text(), "status")
 
     def _get_status_text(self):
-        return u"selecting among {:,} lines ".format(
+        return u"{} lines selected among {:,} lines ".format(
+            len(self._matches),
             self._lines.count()
         ).rjust(self._width)
 
