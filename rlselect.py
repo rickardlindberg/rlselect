@@ -399,6 +399,7 @@ def get_ui_fn(args):
                 self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
                 self.Bind(wx.EVT_CHAR, self._on_key_down)
                 self.Bind(wx.EVT_PAINT, self._on_paint)
+                self.Bind(wx.EVT_SIZE, self._on_size)
                 wx.CallAfter(self._after_init)
 
             def _after_init(self):
@@ -479,6 +480,9 @@ def get_ui_fn(args):
                 dc = wx.AutoBufferedPaintDC(self)
                 if self._surface_bitmap:
                     dc.DrawBitmap(self._surface_bitmap, 0, 0, True)
+
+            def _on_size(self, event):
+                self._after_init()
         return wx_ui_run
     else:
         import contextlib
