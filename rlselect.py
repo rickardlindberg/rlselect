@@ -358,8 +358,11 @@ def main():
         print(result)
         success()
 
+def platform_is_windows():
+    return sys.platform.startswith("win32")
+
 def get_ui_fn(args):
-    if args["--gui"]:
+    if platform_is_windows() or args["--gui"]:
         import wx
 
         def wx_ui_run(config, controller):
