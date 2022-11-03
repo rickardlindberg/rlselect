@@ -23,6 +23,8 @@ from itertools import islice
 import locale
 import os
 import sys
+import io
+
 
 class Config(object):
 
@@ -296,7 +298,10 @@ class Lines(object):
 
     @staticmethod
     def from_stream(stream):
-        return Lines(stream.read().splitlines())
+        if platform_is_windows():
+            return Lines(io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8').read().splitlines())
+        else:
+            return Lines(stream.read().splitlines())
 
     def __init__(self, lines):
         self._lines = unique(lines)
