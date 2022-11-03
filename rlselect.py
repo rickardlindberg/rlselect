@@ -155,7 +155,7 @@ class UiController(object):
 
     MATCHES_START_LINE = 2
 
-    def __init__(self, lines, term, search_fn, tab_exits):
+    def __init__(self, lines, term, search_fn, tab_exits, extended_status_line):
         self._lines = lines
         self._term = term
         self._search_fn = search_fn
@@ -168,6 +168,8 @@ class UiController(object):
         }
         if tab_exits:
             self._action_map[TAB] = ACTION_TAB
+        self._extended_status_line = extended_status_line
+        self._total_nbr_of_matched_lines = 0
 
     def setup(self, screen):
         self._read_size(screen)
@@ -229,10 +231,16 @@ class UiController(object):
         self._text(screen, 1, 0, self._get_status_text(), "status")
 
     def _get_status_text(self):
-        return u"{} lines selected among {:,} lines ".format(
-            len(self._matches),
-            self._lines.count()
-        ).rjust(self._width)
+        if self._extended_status_line:
+            return u"{} lines matched, {} lines visible, among {:,} lines ".format(
+                self._total_nbr_of_matched_lines,
+                len(self._matches),
+                self._lines.count()
+            ).rjust(self._width)
+        else:
+            return u"selectiong among {:,} lines ".format(
+                self._lines.count()
+            ).rjust(self._width)
 
     def _render_term(self, screen):
         self._text(screen, 0, 0, self._get_term_text(), "default")
@@ -251,17 +259,25 @@ class UiController(object):
 
     def _set_term(self, new_term):
         self._term = new_term
-        self._search()
+        if self._extended_status_line:
+            self._search_extended()
+        else:
+            self._search()
+        if len(self._matches) > 0:
+            self._match_highlight = 0
+        else:
+            self._match_highlight = -1
 
     def _search(self):
         self._matches = list(islice(
             self._search_fn(self._lines, self._term),
             self._max_matches()
         ))
-        if len(self._matches) > 0:
-            self._match_highlight = 0
-        else:
-            self._match_highlight = -1
+
+    def _search_extended(self):
+        all_matches = list(self._search_fn(self._lines, self._term))
+        self._total_nbr_of_matched_lines = len(all_matches)
+        self._matches = all_matches[: self._max_matches()]
 
     def _max_matches(self):
         return max(0, self._height - self.MATCHES_START_LINE)
@@ -335,6 +351,7 @@ Options:
   --tab         Allow <Tab> to select an item.
   --action      Print the action taken on the first line.
   --gui         Use GUI version instead of console version.
+  --x-status    Extended information in status line.
   -h,  --help   Show this message and exit.
 """.format(
     name=os.path.basename(__file__)
@@ -352,7 +369,8 @@ def main():
             lines=Lines.from_stream(sys.stdin),
             term=(" ".join(args["<initial-search-term>"])),
             search_fn=search,
-            tab_exits=args["--tab"]
+            tab_exits=args["--tab"],
+            extended_status_line=args["--x-status"]
         )
     )
     if args["--action"]:
@@ -618,6 +636,7 @@ def parse_args():
         "--tab": False,
         "--action": False,
         "--gui": False,
+        "--x-status": False,
         "<initial-search-term>": [],
     }
     rest = sys.argv[1:]
@@ -636,6 +655,9 @@ def parse_args():
             rest = rest[1:]
         elif rest[:1] == ["--gui"]:
             args["--gui"] = True
+            rest = rest[1:]
+        elif rest[:1] == ["--x-status"]:
+            args["--x-status"] = True
             rest = rest[1:]
         elif rest[:1] == ["--"]:
             args["<initial-search-term>"] = rest[1:]
