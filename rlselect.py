@@ -326,14 +326,35 @@ def strip_last_word(text):
 class Lines(object):
 
     @staticmethod
-    def from_stream(stream):
+    def from_stream(stream, no_ansi_esc=False):
         if platform_is_windows():
-            return Lines(io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8').read().splitlines())
+            data = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8').read()
         else:
-            return Lines(stream.read().splitlines())
+            data = stream.read()
+        if no_ansi_esc:
+            data = Lines.remove_ansi_sequencies(data)
+        return Lines(data.splitlines())
+
+    @staticmethod
+    def remove_ansi_sequencies(data):
+        ansi_sequences_to_remove = (
+            "\x1b[0m",  # End mark
+            "\x1b[30m", # Color black
+            "\x1b[31m", # Color red
+            "\x1b[32m", # Color green
+            "\x1b[33m", # Color yellow
+            "\x1b[34m", # Color blue
+            "\x1b[35m", # Color magenta
+            "\x1b[36m", # Color cyan
+            "\x1b[37m", # Color white
+        )
+        for ansi_sequence in ansi_sequences_to_remove:
+            data = data.replace(ansi_sequence, '')
+        return data
 
     def __init__(self, lines):
         self._lines = unique(lines)
+
 
     def iter(self):
         return enumerate(self._lines)
@@ -357,7 +378,7 @@ USAGE = """\
 I select stuff.
 
 Usage:
-  {name} [--tab] [--action] [--gui] [--] [<initial-search-term>...]
+  {name} [--tab] [--action] [--gui] [--x-status] [--no_ansi-esc] [--] [<initial-search-term>...]
   {name} (-h | --help)
 
 Options:
@@ -365,6 +386,7 @@ Options:
   --action      Print the action taken on the first line.
   --gui         Use GUI version instead of console version.
   --x-status    Extended information in status line.
+  --no_ansi-esc Remove ansi escape sequences for coloring from input.
   -h,  --help   Show this message and exit.
 """.format(
     name=os.path.basename(__file__)
@@ -379,7 +401,7 @@ def main():
     (action, result) = get_ui_fn(args)(
         Config(os.path.expanduser("~/.rlselect.cfg")),
         UiController(
-            lines=Lines.from_stream(sys.stdin),
+            lines=Lines.from_stream(sys.stdin, no_ansi_esc=args["--no_ansi-esc"]),
             term=(" ".join(args["<initial-search-term>"])),
             search_fn=search,
             tab_exits=args["--tab"],
@@ -650,6 +672,7 @@ def parse_args():
         "--action": False,
         "--gui": False,
         "--x-status": False,
+        "--no_ansi-esc": False,
         "<initial-search-term>": [],
     }
     rest = sys.argv[1:]
@@ -671,6 +694,9 @@ def parse_args():
             rest = rest[1:]
         elif rest[:1] == ["--x-status"]:
             args["--x-status"] = True
+            rest = rest[1:]
+        elif rest[:1] == ["--no_ansi-esc"]:
+            args["--no_ansi-esc"] = True
             rest = rest[1:]
         elif rest[:1] == ["--"]:
             args["<initial-search-term>"] = rest[1:]
