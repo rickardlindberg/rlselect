@@ -99,6 +99,19 @@ def get_match_fn(expression):
             line = line.lower()
         marks = set()
         for term, term_len in terms:
+            # Negative matching..
+            if term[0] == '!':
+                # A single exclamation char always matches
+                if term == '!':
+                    continue
+                # A double exclamation string means match for single exclamation char
+                elif term == '!!':
+                    term = '!'
+                else:
+                    # If the term after exclamation char is not in line..
+                    # we have a match, so continue matching.
+                    if term[1:] not in line:
+                        continue
             if term in line:
                 index = line.find(term)
                 while index != -1:
