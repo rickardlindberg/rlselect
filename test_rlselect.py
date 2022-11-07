@@ -184,7 +184,8 @@ def create_controller(tab_exits=False):
         Lines([]),
         "",
         lambda x, y: [],
-        tab_exits
+        tab_exits,
+        False,
     )
     controller.setup(screen)
     return controller
