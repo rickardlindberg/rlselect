@@ -378,7 +378,7 @@ USAGE = """\
 I select stuff.
 
 Usage:
-  {name} [--tab] [--action] [--gui] [--x-status] [--no_ansi-esc] [--] [<initial-search-term>...]
+  {name} [--tab] [--action] [--gui] [--x-status] [--no-ansi-esc] [--] [<initial-search-term>...]
   {name} (-h | --help)
 
 Options:
@@ -386,7 +386,7 @@ Options:
   --action      Print the action taken on the first line.
   --gui         Use GUI version instead of console version.
   --x-status    Extended information in status line.
-  --no_ansi-esc Remove ansi escape sequences for coloring from input.
+  --no-ansi-esc Remove ansi escape sequences for coloring from input.
   -h,  --help   Show this message and exit.
 """.format(
     name=os.path.basename(__file__)
@@ -401,7 +401,7 @@ def main():
     (action, result) = get_ui_fn(args)(
         Config(os.path.expanduser("~/.rlselect.cfg")),
         UiController(
-            lines=Lines.from_stream(sys.stdin, no_ansi_esc=args["--no_ansi-esc"]),
+            lines=Lines.from_stream(sys.stdin, no_ansi_esc=args["--no-ansi-esc"]),
             term=(" ".join(args["<initial-search-term>"])),
             search_fn=search,
             tab_exits=args["--tab"],
@@ -672,7 +672,7 @@ def parse_args():
         "--action": False,
         "--gui": False,
         "--x-status": False,
-        "--no_ansi-esc": False,
+        "--no-ansi-esc": False,
         "<initial-search-term>": [],
     }
     rest = sys.argv[1:]
@@ -695,8 +695,8 @@ def parse_args():
         elif rest[:1] == ["--x-status"]:
             args["--x-status"] = True
             rest = rest[1:]
-        elif rest[:1] == ["--no_ansi-esc"]:
-            args["--no_ansi-esc"] = True
+        elif rest[:1] == ["--no-ansi-esc"]:
+            args["--no-ansi-esc"] = True
             rest = rest[1:]
         elif rest[:1] == ["--"]:
             args["<initial-search-term>"] = rest[1:]
