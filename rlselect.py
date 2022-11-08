@@ -105,8 +105,8 @@ def get_match_fn(expression):
                 if term == '!':
                     continue
                 # A double exclamation string means match for single exclamation char
-                elif term == '!!':
-                    term = '!'
+                elif term.startswith('!!'):
+                    term = term[1:]
                 else:
                     # If the term after exclamation char is not in line..
                     # we have a match, so continue matching.
